@@ -3,7 +3,6 @@ package youtube.util;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.HttpTransport;
@@ -60,9 +59,9 @@ public class Auth {
                 .build();
 
         // Build the local server and bind it to port 8080
-        LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
-
+        //LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setHost("boiling-shore-2209.herokuapp.com").setPort(9090).build();
+        MyReceiver receiver = new MyReceiver("boiling-shore-2209.herokuapp.com", -1);
         // Authorize.
-        return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 }
