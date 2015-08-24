@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.gson.Gson;
+import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
 import models.SearchResponse;
 import play.mvc.Controller;
@@ -38,7 +39,8 @@ public class SearchController extends Controller {
 
         }catch(CredentialRequiredException e) {
             e.printStackTrace();
-            return redirect("https://accounts.google.com/o/oauth2/auth?client_id=506479486719-8sar4lu3vsoihmck1k5fie8blbe1q947.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost:9000%2FCallback&scope=https://www.googleapis.com/auth/youtube&response_type=code&access_type=offline");
+            String redirectUri = ConfigFactory.load().getString("youtube.api.authorize.uri");
+            return redirect(redirectUri);
             // response  - set empty or error code
         }
         catch(Exception e) {
