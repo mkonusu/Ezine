@@ -18,6 +18,7 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import models.SearchRequest;
+import youtube.util.CredentialRequiredException;
 import youtube.util.YoutubeConnector;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class Search {
      *
      * @param searchRequest search object.
      */
-    public static SearchListResponse videos(SearchRequest searchRequest) {
+    public static SearchListResponse videos(SearchRequest searchRequest) throws CredentialRequiredException {
 
         try {
             // Define the API request for retrieving search results.
@@ -67,10 +68,16 @@ public class Search {
                     + e.getDetails().getMessage());
         } catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        }   catch (CredentialRequiredException e) {
+                System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            throw e;
+
         } catch (Throwable t) {
             t.printStackTrace();
 
         }
          return null;
     }
+
+
 }

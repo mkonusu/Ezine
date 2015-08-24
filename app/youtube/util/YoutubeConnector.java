@@ -28,7 +28,7 @@ public class YoutubeConnector {
     public static YouTube getConnection () throws Exception{
 
         try {
-            Credential credential = Auth.authorize(scopes, "videos");
+            Credential credential = MyAuth.authorize(scopes, "videos");
 
             // This object is used to make YouTube Data API requests.
             youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential).setApplicationName(
