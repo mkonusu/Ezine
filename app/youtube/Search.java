@@ -17,6 +17,7 @@ package youtube;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
+import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
 import youtube.util.CredentialRequiredException;
 import youtube.util.YoutubeConnector;
@@ -42,12 +43,13 @@ public class Search {
 
         try {
             // Define the API request for retrieving search results.
-            YouTube.Search.List search = YoutubeConnector.getConnection().search().list("id,snippet");
+            YouTube.Search.List search = YoutubeConnector.getConnectionForSearch().search().list("id,snippet");
 
             // Set your developer key from the {{ Google Cloud Console }} for
             // non-authenticated requests. See:
             // {{ https://cloud.google.com/console }}
-
+            String apiKey = ConfigFactory.load().getString("youtube.apikey");
+            search.setKey(apiKey);
             search.setQ(searchRequest.searchKey);
 
             // Restrict the search results to only include videos. See:
@@ -71,13 +73,9 @@ public class Search {
         }   catch (CredentialRequiredException e) {
                 System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
             throw e;
-
         } catch (Throwable t) {
             t.printStackTrace();
-
         }
          return null;
     }
-
-
 }
