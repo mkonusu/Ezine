@@ -113,7 +113,8 @@ public class UserController  extends Controller {
     @BodyParser.Of(BodyParser.Json.class)
     public static Result register() {
 
-        JsonNode json = request().body().asJson();
+        JsonNode json = request().body()
+                .asJson();
         User user = new Gson().fromJson(json.toString(), User.class);
 
         String passwd = getEncodedPassword(user.password);
