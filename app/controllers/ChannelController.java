@@ -38,6 +38,7 @@ public class ChannelController extends Controller {
                 channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
             }
 
+
             response = ResponseMapper.getChannelResponse(YChannel.list(channelRequest));
 
         }  catch(CredentialRequiredException e) {

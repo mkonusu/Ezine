@@ -75,6 +75,7 @@ public class ResponseMapper {
                 channelInfo.type = channel.getKind();
                 channelInfo.channelId = channel.getId();
                 channelInfo.description = channel.getSnippet().getDescription();
+
                 //channelInfo.publichedAt = channel.getSnippet().getPublishedAt().;
 
                 Thumbnail defaultThumbnail = channel.getSnippet().getThumbnails().getDefault();
