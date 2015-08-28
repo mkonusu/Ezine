@@ -29,7 +29,7 @@ import java.io.IOException;
  *
  * @author Murali Konusu
  */
-public class Search {
+public class YSearch {
 
     public static boolean GLOBAL_SEARCH = false;
 

@@ -1,6 +1,8 @@
 package youtube.util;
 
 import com.google.api.services.youtube.model.*;
+import models.ChannelDetails;
+import models.ChannelResponse;
 import models.SearchResponse;
 import models.SearchVideo;
 
@@ -49,6 +51,39 @@ public class ResponseMapper {
             }
 
             response.videos = videos;
+        }
+
+        return response;
+    }
+
+    public static ChannelResponse getChannelResponsee(ChannelListResponse channelListResponse) {
+
+        ChannelResponse response =  new ChannelResponse();
+        response.kind =  channelListResponse.getKind();
+        response.nextPageToken =  channelListResponse.getNextPageToken();
+        response.prevPageToken =  channelListResponse.getPrevPageToken();
+        response.recordsPerPage = channelListResponse.getPageInfo().getResultsPerPage();
+        response.totalRecords =  channelListResponse.getPageInfo().getTotalResults();
+
+        List<com.google.api.services.youtube.model.Channel> channels = channelListResponse.getItems();
+
+        if(channels!=null && channels.size() >0) {
+            List<ChannelDetails> channelDetails =  new ArrayList<>();
+            for(com.google.api.services.youtube.model.Channel channel : channels) {
+                ChannelDetails channelInfo =  new ChannelDetails();
+
+                channelInfo.type = channel.getKind();
+                channelInfo.channelId = channel.getId();
+                channelInfo.description = channel.getSnippet().getDescription();
+                //channelInfo.publichedAt = channel.getSnippet().getPublishedAt().;
+
+                Thumbnail defaultThumbnail = channel.getSnippet().getThumbnails().getDefault();
+                channelInfo.thumbnailUrl = defaultThumbnail.getUrl();
+
+                channelInfo.title = channel.getSnippet().getTitle();
+
+                channelDetails.add(channelInfo);
+            }
         }
 
         return response;

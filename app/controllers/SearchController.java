@@ -10,7 +10,7 @@ import models.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import play.mvc.Controller;
 import play.mvc.Result;
-import youtube.Search;
+import youtube.YSearch;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
 
@@ -20,7 +20,7 @@ import java.io.File;
 public class SearchController extends Controller {
 
     private static String DEFAULT_SEARCH_FILE = "public/files/default-search.json";
-    private static final int DEFAULT_RECORDS_PER_PAGE = 10;
+    public static final int DEFAULT_RECORDS_PER_PAGE = 10;
 
     public static Result search(String searchKey) {
 
@@ -63,8 +63,7 @@ public class SearchController extends Controller {
         return ok(new Gson().toJson(response));
     }
 
-
     public static SearchListResponse  search(SearchRequest searchRequest) throws  CredentialRequiredException {
-        return Search.videos(searchRequest);
+        return YSearch.videos(searchRequest);
     }
 }
