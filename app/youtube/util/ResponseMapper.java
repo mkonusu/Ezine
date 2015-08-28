@@ -56,36 +56,70 @@ public class ResponseMapper {
         return response;
     }
 
-    public static ChannelResponse getChannelResponse(ChannelListResponse channelListResponse) {
+    public static ChannelResponse getChannelResponse(SubscriptionListResponse subscriptionListResponse) {
 
         ChannelResponse response =  new ChannelResponse();
-        response.kind =  channelListResponse.getKind();
-        response.nextPageToken =  channelListResponse.getNextPageToken();
-        response.prevPageToken =  channelListResponse.getPrevPageToken();
-        response.recordsPerPage = channelListResponse.getPageInfo().getResultsPerPage();
-        response.totalRecords =  channelListResponse.getPageInfo().getTotalResults();
+        //response.kind =  channelListResponse.getKind();
+        //response.nextPageToken =  channelListResponse.getNextPageToken();
+        //response.prevPageToken =  channelListResponse.getPrevPageToken();
+        //response.recordsPerPage = channelListResponse.getPageInfo().getResultsPerPage();
+        //response.totalRecords =  channelListResponse.getPageInfo().getTotalResults();
 
-        List<com.google.api.services.youtube.model.Channel> channels = channelListResponse.getItems();
+       ;
 
-        if(channels!=null && channels.size() >0) {
-            List<ChannelDetails> channelDetails =  new ArrayList<>();
-            for(com.google.api.services.youtube.model.Channel channel : channels) {
-                ChannelDetails channelInfo =  new ChannelDetails();
 
-                channelInfo.type = channel.getKind();
-                channelInfo.channelId = channel.getId();
-                channelInfo.description = channel.getSnippet().getDescription();
 
-                //channelInfo.publichedAt = channel.getSnippet().getPublishedAt().;
+        if(subscriptionListResponse !=null ) {
+            System.out.println("============ Response ==================");
+            System.out.println("getEtag " + subscriptionListResponse.getEtag());
+            System.out.println("getEventId "+subscriptionListResponse.getEventId());
+            System.out.println("getKind "+subscriptionListResponse.getKind());
+            response.kind = subscriptionListResponse.getKind();
 
-                Thumbnail defaultThumbnail = channel.getSnippet().getThumbnails().getDefault();
-                channelInfo.thumbnailUrl = defaultThumbnail.getUrl();
+            System.out.println("getNextPageToken "+subscriptionListResponse.getNextPageToken());
+            response.kind = subscriptionListResponse.getNextPageToken();
+            System.out.println("getPrevPageToken "+subscriptionListResponse.getPrevPageToken());
+            response.kind = subscriptionListResponse.getPrevPageToken();
 
-                channelInfo.title = channel.getSnippet().getTitle();
+            System.out.println("getVisitorId "+subscriptionListResponse.getVisitorId());
+            System.out.println("getPageInfo "+subscriptionListResponse.getPageInfo());
+            System.out.println("getTokenPagination "+subscriptionListResponse.getTokenPagination());
 
-                channelDetails.add(channelInfo);
+
+
+
+            if(subscriptionListResponse.getItems() != null) {
+                List<ChannelDetails> details =  new ArrayList<>(subscriptionListResponse.size());
+                for (Subscription sub : subscriptionListResponse.getItems()) {
+                    System.out.println("////// New Resource ///////");
+                    System.out.println("Resource ID " + sub.getSnippet().getResourceId());
+                    System.out.println(" Resource Title " + sub.getSnippet().getTitle());
+                    System.out.println(" Resource getChannelId " + sub.getSnippet().getChannelId());
+                    ChannelDetails channelInfo =  new ChannelDetails();
+                    channelInfo.channelId = sub.getSnippet().getChannelId();
+                    channelInfo.description = sub.getSnippet().getDescription();
+                    channelInfo.title = sub.getSnippet().getChannelTitle();
+                    details.add(channelInfo);
+
+
+                    System.out.println("Resource getDescription " + sub.getSnippet().getDescription());
+                    System.out.println(" Resource getChannelTitle " + sub.getSnippet().getChannelTitle());
+                    System.out.println(" Resource getPublishedAt " + sub.getSnippet().getPublishedAt() );
+                    System.out.println("Resource getEtag " + sub.getEtag());
+                    System.out.println(" Resource getId " + sub.getId());
+                    System.out.println(" Resource getKind " + sub.getKind());
+
+                    SubscriptionContentDetails contentDetails = sub.getContentDetails();
+                    System.out.println(" contentDetails getNewItemCount " + contentDetails.getNewItemCount());
+                    System.out.println(" contentDetails getTotalItemCount " + contentDetails.getTotalItemCount());
+                    System.out.println(" contentDetails getActivityType " + contentDetails.getActivityType());
+                    System.out.println(" contentDetails values " + contentDetails.values());
+
+                    System.out.println();
+                }
             }
         }
+
 
         return response;
     }
