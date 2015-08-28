@@ -8,20 +8,17 @@ import models.ChannelRequest;
 import models.ChannelResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import play.mvc.Controller;
 import play.mvc.Result;
 import youtube.YChannel;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
 
 
-import static play.mvc.Controller.request;
-import static play.mvc.Results.ok;
-import static play.mvc.Results.redirect;
-
 /**
  * @Author Murali Konusu
  */
-public class ChannelController {
+public class ChannelController extends Controller {
 
     ChannelResponse channelResponse = null;
 

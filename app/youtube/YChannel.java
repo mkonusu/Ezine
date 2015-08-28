@@ -23,7 +23,7 @@ public class YChannel {
     public static ChannelListResponse list(ChannelRequest channelRequest) throws CredentialRequiredException{
         try {
             // Define the API request for retrieving search results.
-            YouTube.Channels.List channelsList  = YoutubeConnector.getConnectionForSearch().channels().list("id,snippet");
+            YouTube.Channels.List channelsList  = YoutubeConnector.getConnection().channels().list("id,snippet");
             channelsList.setMine(true);
             channelsList.setMaxResults(channelRequest.recordsPerPage);
             channelsList.setFields("kind,nextPageToken,pageInfo,prevPageToken,tokenPagination,items(id/kind,id/videoId,snippet/title,snippet/channelId,snippet/thumbnails/default/url)");
