@@ -56,7 +56,7 @@ public class ResponseMapper {
         return response;
     }
 
-    public static ChannelResponse getChannelResponsee(ChannelListResponse channelListResponse) {
+    public static ChannelResponse getChannelResponse(ChannelListResponse channelListResponse) {
 
         ChannelResponse response =  new ChannelResponse();
         response.kind =  channelListResponse.getKind();
