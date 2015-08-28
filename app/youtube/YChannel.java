@@ -26,7 +26,7 @@ public class YChannel {
             YouTube.Channels.List channelsList  = YoutubeConnector.getConnection().channels().list("contentDetails");
             channelsList.setMine(true);
             channelsList.setMaxResults(channelRequest.recordsPerPage);
-            channelsList.setFields("items/contentDetails");
+            channelsList.setFields("items(contentDetails,id,kind,snippet,topicDetails),kind,nextPageToken,pageInfo,prevPageToken,tokenPagination");
 
             ChannelListResponse channelListResponse = channelsList.execute();
 
