@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 /**
  * @Author Murali Konusu
  */
@@ -11,5 +13,7 @@ public class ChannelResponse {
 
     public long recordsPerPage;
     public long totalRecords;
+
+    public List<ChannelDetails> subscribedChannels;
 
 }

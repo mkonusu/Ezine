@@ -84,8 +84,10 @@ public class ResponseMapper {
             System.out.println("getVisitorId "+subscriptionListResponse.getVisitorId());
             System.out.println("getPageInfo "+subscriptionListResponse.getPageInfo());
             System.out.println("getTokenPagination "+subscriptionListResponse.getTokenPagination());
-
-
+            if(subscriptionListResponse.getPageInfo() !=null) {
+                response.recordsPerPage = subscriptionListResponse.getPageInfo().getResultsPerPage();
+                response.totalRecords = subscriptionListResponse.getPageInfo().getTotalResults();
+            }
 
 
             if(subscriptionListResponse.getItems() != null) {
@@ -98,7 +100,7 @@ public class ResponseMapper {
                     ChannelDetails channelInfo =  new ChannelDetails();
                     channelInfo.channelId = sub.getSnippet().getChannelId();
                     channelInfo.description = sub.getSnippet().getDescription();
-                    channelInfo.title = sub.getSnippet().getChannelTitle();
+                    channelInfo.title = sub.getSnippet().getTitle();
                     details.add(channelInfo);
 
 
@@ -117,6 +119,7 @@ public class ResponseMapper {
 
                     System.out.println();
                 }
+                response.subscribedChannels = details;
             }
         }
 
