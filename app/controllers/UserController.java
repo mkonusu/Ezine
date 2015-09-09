@@ -45,11 +45,7 @@ public class UserController  extends Controller {
         JsonNode json = request().body().asJson();
         User user = new Gson().fromJson(json.toString(), User.class);
 
-        String passwd = getEncodedPassword(user.password);
-        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
-        String query = String.format("{email : '%s', password : '%s', 'isActive': true}", user.email, passwd);
-
-        User fromDB = users.findOne(query).as(User.class);
+        User fromDB = authenticate(user);
         if (fromDB == null ) {
 
             ObjectNode resp = new ObjectMapper().createObjectNode();
@@ -62,6 +58,44 @@ public class UserController  extends Controller {
 
         fromDB.password = ""; // remove password in response
         return ok(new Gson().toJson(fromDB));
+    }
+
+    public static User authenticate(User user) {
+
+        String passwd = getEncodedPassword(user.password);
+        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+
+        User fromDB = users.findOne("{email : #, password : #}", user.email, passwd).as(User.class);
+
+        return fromDB;
+    }
+
+
+    /**
+     * Register a new user
+     *
+     * @return Result - status of registration (SUCCESS / FAILURE - ALREADY EXISTS, INSUFFIECIENT DATA, INVALID DATA)
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result register() {
+
+        JsonNode json = request().body().asJson();
+        User user = new Gson().fromJson(json.toString(), User.class);
+        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+
+        // check user already exists
+
+        User fromDB = users.findOne("{email : #}", user.email).as(User.class);
+        if(fromDB ==  null) {
+            String password = getEncodedPassword(user.password);
+            user.password = password;
+            users.save(user);
+            createUserSession(user);
+            createLoginHistory(user);
+        } else {
+            return ok("User already exists");
+        }
+        return ok("Success !");
     }
 
 
@@ -105,26 +139,6 @@ public class UserController  extends Controller {
         return sb.toString();
     }
 
-    /**
-     * Register a new user
-     *
-     * @return Result - status of registration (SUCCESS / FAILURE - ALREADY EXISTS, INSUFFIECIENT DATA, INVALID DATA)
-     */
-    @BodyParser.Of(BodyParser.Json.class)
-    public static Result register() {
-
-        JsonNode json = request().body()
-                .asJson();
-        User user = new Gson().fromJson(json.toString(), User.class);
-
-        String passwd = getEncodedPassword(user.password);
-        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
-        users.save(user);
-        createUserSession(user);
-        createLoginHistory(user);
-
-        return ok("Success !");
-    }
 
     private static void createUserSession(User user) {
 
