@@ -95,7 +95,9 @@ public class UserController  extends Controller {
         } else {
             return ok("User already exists");
         }
-        return ok("Success !");
+        fromDB = users.findOne("{email : #}", user.email).as(User.class);
+        fromDB.password = null;
+        return ok(new Gson().toJson(fromDB));
     }
 
 
