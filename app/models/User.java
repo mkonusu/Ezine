@@ -2,6 +2,7 @@ package models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author Murali Konusu
@@ -16,8 +17,8 @@ public class User implements Serializable {
     public Date timestamp;
     public boolean isActive;
 
+    public List<Language> languages;
+
     public User() {
-
     }
-
 }
