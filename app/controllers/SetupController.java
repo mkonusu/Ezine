@@ -54,19 +54,21 @@ public class SetupController extends Controller {
                 fromDB.languages = new ArrayList<>();
             }
 
+            boolean found = false;
             if(fromDB.languages.size() >0 ){
                 // check if already exists
-                boolean found = false;
+
                 for(Language lang: fromDB.languages) {
-                    if(lang.equals(languageCode)) {
+                    if(lang.code.equals(languageCode)) {
                         found = true;
                         break;
                     }
                 }
-                if(!found) {
-                    fromDB.languages.add(language);
-                    users.save(fromDB);
-                }
+
+            }
+            if(!found) {
+                fromDB.languages.add(language);
+                users.save(fromDB);
             }
         }
 

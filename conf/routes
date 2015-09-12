@@ -9,7 +9,7 @@ GET         /Callback                                       controllers.Applicat
 GET         /channel/list                                   controllers.ChannelController.listChannels()
 
 GET         /api/v1/languages                                      controllers.SetupController.languages()
-GET         /api/v1//user/:userId/language/:langCode/subscribe      controllers.SetupController.subscribeLanguage(userId, langCode)
+GET         /api/v1/user/:userId/language/:langCode/subscribe      controllers.SetupController.subscribeLanguage(userId, langCode)
 GET         /api/v1/user/:userId/language/:langCode/unsubscribe    controllers.SetupController.unsubscribeLanguage(userId, langCode)
 
 POST        /api/v1/verify                                         controllers.UserController.verify()
