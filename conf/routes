@@ -8,12 +8,12 @@ GET         /search/:topic                                  controllers.SearchCo
 GET         /Callback                                       controllers.Application.callbackHandler()
 GET         /channel/list                                   controllers.ChannelController.listChannels()
 
-GET         /languages                                      controllers.SetupController.languages()
-GET         /user/:userId/language/:langCode/subscribe      controllers.SetupController.subscribeLanguage(userId, langCode)
-GET         /user/:userId/language/:langCode/unsubscribe    controllers.SetupController.unsubscribeLanguage(userId, langCode)
+GET         /api/v1/languages                                      controllers.SetupController.languages()
+GET         /api/v1//user/:userId/language/:langCode/subscribe      controllers.SetupController.subscribeLanguage(userId, langCode)
+GET         /api/v1/user/:userId/language/:langCode/unsubscribe    controllers.SetupController.unsubscribeLanguage(userId, langCode)
 
-POST        /verify                                         controllers.UserController.verify()
-POST        /register                                       controllers.UserController.register()
+POST        /api/v1/verify                                         controllers.UserController.verify()
+POST        /api/v1/register                                       controllers.UserController.register()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                               controllers.Assets.at(path="/public", file)
