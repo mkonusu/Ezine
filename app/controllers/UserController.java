@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
+import models.Language;
 import models.LoginHistory;
 import models.Session;
 import models.User;
 import org.joda.time.DateTime;
 import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.BodyParser;
@@ -17,8 +19,11 @@ import play.mvc.Http;
 import play.mvc.Result;
 import util.CollectionNames;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,8 +54,9 @@ public class UserController  extends Controller {
         if (fromDB == null ) {
 
             ObjectNode resp = new ObjectMapper().createObjectNode();
-            resp.put("msg", Messages.get("login.unauthorized"));
-            return unauthorized(resp);
+            resp.put("msg", "Account doesn't exists!");
+            //return unauthorized(resp);
+            return ok(resp);
         }
 
         createUserSession(fromDB);
@@ -206,6 +212,21 @@ public class UserController  extends Controller {
             return cookie.value();
         }
         return null;
+    }
+
+    public static Result subscribedLanguages(String userId) {
+
+        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+
+        User fromDB = users.findOne("{_id : #}",userId).as(User.class);
+
+        if(fromDB != null) {
+            JsonNode resp= new ObjectMapper().valueToTree(fromDB.languages);
+            return ok(resp);
+        } else {
+            // send invalid user
+            return ok("Invalid User!");
+        }
     }
 
 

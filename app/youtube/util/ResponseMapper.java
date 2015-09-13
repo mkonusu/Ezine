@@ -87,6 +87,8 @@ public class ResponseMapper {
             if(subscriptionListResponse.getPageInfo() !=null) {
                 response.recordsPerPage = subscriptionListResponse.getPageInfo().getResultsPerPage();
                 response.totalRecords = subscriptionListResponse.getPageInfo().getTotalResults();
+                response.nextPageToken = subscriptionListResponse.getNextPageToken();
+                response.prevPageToken = subscriptionListResponse.getPrevPageToken();
             }
 
 
