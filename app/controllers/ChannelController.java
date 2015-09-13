@@ -22,7 +22,7 @@ public class ChannelController extends Controller {
 
     ChannelResponse channelResponse = null;
 
-    public static Result listChannels() {
+    public static Result listChannels(String userId, String langCode) {
 
         ChannelResponse response = null;
         String SUPERUSER = request().getQueryString("SUPERUSER");

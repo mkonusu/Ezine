@@ -6,7 +6,7 @@
 GET         /                                                          controllers.Application.index
 GET         /search/:topic                                             controllers.SearchController.search(topic)
 GET         /Callback                                                  controllers.Application.callbackHandler()
-GET         /api/v1/user/:userId/language/:langCode/channels           controllers.ChannelController.listChannels()
+GET         /api/v1/user/:userId/language/:langCode/channels           controllers.ChannelController.listChannels(userId, langCode)
 
 GET         /api/v1/languages                                          controllers.SetupController.languages()
 GET         /api/v1/user/:userId/languages                             controllers.UserController.subscribedLanguages(userId)
