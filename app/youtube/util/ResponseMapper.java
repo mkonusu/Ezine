@@ -91,71 +91,10 @@ public class ResponseMapper {
 
             }
 
-
             if(subscriptionListResponse.getItems() != null) {
                 List<ChannelDetails> details =  new ArrayList<>(subscriptionListResponse.size());
                 for (Subscription sub : subscriptionListResponse.getItems()) {
-                    System.out.println("////// New Resource ///////");
-                    System.out.println("getSnippet ID " + sub.getSnippet().getResourceId()); //  {"channelId":"UCyElywpP4PArZI6Ws3rzAsw","kind":"youtube#channel"}
-                    if(sub.getSnippet().getResourceId() !=null) {
-                        System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId()); // W
-                        System.out.println("getSnippet getResourceId get " + sub.getSnippet().getResourceId().get("channelId")); // W
-                        System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId()); // W
-                    }
-
-                    System.out.println(" getSnippet Title " + sub.getSnippet().getTitle()); // WORKING - USE
-                    System.out.println(" getSnippet getChannelId " + sub.getSnippet().getChannelId()); // DONOT USE
-                    System.out.println(" getSnippet get " + sub.getSnippet().get("channelId")); // WORKING - USE
-                    System.out.println(" getSnippet getChannelTitle " + sub.getSnippet().getChannelTitle()); // NW
-                    System.out.println(" getSnippet getDescription " + sub.getSnippet().getDescription()); // USE
-
-                    System.out.println(" Resource getPublishedAt " + sub.getSnippet().getPublishedAt() ); // W
-                    System.out.println("Resource getEtag " + sub.getEtag()); // W
-                    System.out.println(" Resource getId " + sub.getId()); // NOT REQUIRED
-                    System.out.println(" Resource getKind " + sub.getKind()); // W
-
-
-                    System.out.println(" Resource getHigh " + sub.getSnippet().getThumbnails().getHigh().getUrl() +" "+sub.getSnippet().getThumbnails().getHigh().getHeight()+" "+sub.getSnippet().getThumbnails().getHigh().getWidth());
-                    if(sub.getSnippet().getThumbnails().getMedium() != null) {
-                        System.out.println(" Resource getMedium " + sub.getSnippet().getThumbnails().getMedium().getUrl() + " " + sub.getSnippet().getThumbnails().getMedium().getHeight() + " " + sub.getSnippet().getThumbnails().getMedium().getWidth());
-                    }
-                    if(sub.getSnippet().getThumbnails().getMaxres() != null) {
-                        System.out.println(" Resource getMaxres " + sub.getSnippet().getThumbnails().getMaxres().getUrl() + " " + sub.getSnippet().getThumbnails().getMaxres().getHeight() + " " + sub.getSnippet().getThumbnails().getMaxres().getWidth());
-                    }
-                    if(sub.getSnippet().getThumbnails().getStandard() != null) {
-                        System.out.println(" Resource getStandard " + sub.getSnippet().getThumbnails().getStandard().getUrl() + " " + sub.getSnippet().getThumbnails().getStandard().getHeight() + " " + sub.getSnippet().getThumbnails().getStandard().getWidth());
-                    }
-                    if(sub.getSnippet().getThumbnails().getDefault() != null) {
-                        System.out.println(" Resource getDefault " + sub.getSnippet().getThumbnails().getDefault().getUrl() + " " + sub.getSnippet().getThumbnails().getDefault().getHeight() + " " + sub.getSnippet().getThumbnails().getDefault().getWidth());
-                    }
-
-                    if(sub.getContentDetails() != null) {
-                        SubscriptionContentDetails contentDetails = sub.getContentDetails();
-                        System.out.println(" contentDetails getNewItemCount " + contentDetails.getNewItemCount());
-                        System.out.println(" contentDetails getTotalItemCount " + contentDetails.getTotalItemCount());
-                        System.out.println(" contentDetails getActivityType " + contentDetails.getActivityType());
-                        System.out.println(" contentDetails values " + contentDetails.values());
-
-                    }
-
-                    if(sub.getSubscriberSnippet() != null) {
-                        System.out.println(" getSubscriberSnippet getChannelId " + sub.getSubscriberSnippet().getChannelId());
-                        System.out.println(" getSubscriberSnippet getDescription " + sub.getSubscriberSnippet().getDescription());
-                        System.out.println(" getSubscriberSnippet getTitle " + sub.getSubscriberSnippet().getTitle());
-                    }
-
-
-                    ChannelDetails channelInfo =  new ChannelDetails();
-                    channelInfo.channelId = sub.getSnippet().getResourceId().getChannelId();
-                    channelInfo.description = sub.getSnippet().getDescription();
-                    channelInfo.title = sub.getSnippet().getTitle();
-                    details.add(channelInfo);
-
-
-
-
-
-                    System.out.println();
+                    details.add(getChannelResponse(sub));
                 }
                 response.subscribedChannels = details;
             }
@@ -164,4 +103,76 @@ public class ResponseMapper {
 
         return response;
     }
+
+
+
+    public static ChannelDetails getChannelResponse(Subscription sub) {
+
+
+        if(sub !=null ) {
+            ChannelDetails channelInfo =  new ChannelDetails();
+            channelInfo.channelId = (String)sub.getSnippet().get("channelId");
+            channelInfo.description = sub.getSnippet().getDescription();
+            channelInfo.title = sub.getSnippet().getTitle();
+
+            return channelInfo;
+        }
+
+
+        return null;
+    }
+
+
+    public static void prettyPrint(Subscription sub) {
+        System.out.println("////// New Resource ///////");
+        System.out.println("getSnippet ID " + sub.getSnippet().getResourceId()); //  {"channelId":"UCyElywpP4PArZI6Ws3rzAsw","kind":"youtube#channel"}
+        if(sub.getSnippet().getResourceId() !=null) {
+            System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId()); // W
+            System.out.println("getSnippet getResourceId get " + sub.getSnippet().getResourceId().get("channelId")); // W
+            System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId()); // W
+        }
+
+        System.out.println(" getSnippet Title " + sub.getSnippet().getTitle()); // WORKING - USE
+        System.out.println(" getSnippet getChannelId " + sub.getSnippet().getChannelId()); // DONOT USE
+        System.out.println(" getSnippet get " + sub.getSnippet().get("channelId")); // WORKING - USE
+        System.out.println(" getSnippet getChannelTitle " + sub.getSnippet().getChannelTitle()); // NW
+        System.out.println(" getSnippet getDescription " + sub.getSnippet().getDescription()); // USE
+
+        System.out.println(" Resource getPublishedAt " + sub.getSnippet().getPublishedAt() ); // W
+        System.out.println("Resource getEtag " + sub.getEtag()); // W
+        System.out.println(" Resource getId " + sub.getId()); // NOT REQUIRED
+        System.out.println(" Resource getKind " + sub.getKind()); // W
+
+
+        System.out.println(" Resource getHigh " + sub.getSnippet().getThumbnails().getHigh().getUrl() +" "+sub.getSnippet().getThumbnails().getHigh().getHeight()+" "+sub.getSnippet().getThumbnails().getHigh().getWidth());
+        if(sub.getSnippet().getThumbnails().getMedium() != null) {
+            System.out.println(" Resource getMedium " + sub.getSnippet().getThumbnails().getMedium().getUrl() + " " + sub.getSnippet().getThumbnails().getMedium().getHeight() + " " + sub.getSnippet().getThumbnails().getMedium().getWidth());
+        }
+        if(sub.getSnippet().getThumbnails().getMaxres() != null) {
+            System.out.println(" Resource getMaxres " + sub.getSnippet().getThumbnails().getMaxres().getUrl() + " " + sub.getSnippet().getThumbnails().getMaxres().getHeight() + " " + sub.getSnippet().getThumbnails().getMaxres().getWidth());
+        }
+        if(sub.getSnippet().getThumbnails().getStandard() != null) {
+            System.out.println(" Resource getStandard " + sub.getSnippet().getThumbnails().getStandard().getUrl() + " " + sub.getSnippet().getThumbnails().getStandard().getHeight() + " " + sub.getSnippet().getThumbnails().getStandard().getWidth());
+        }
+        if(sub.getSnippet().getThumbnails().getDefault() != null) {
+            System.out.println(" Resource getDefault " + sub.getSnippet().getThumbnails().getDefault().getUrl() + " " + sub.getSnippet().getThumbnails().getDefault().getHeight() + " " + sub.getSnippet().getThumbnails().getDefault().getWidth());
+        }
+
+        if(sub.getContentDetails() != null) {
+            SubscriptionContentDetails contentDetails = sub.getContentDetails();
+            System.out.println(" contentDetails getNewItemCount " + contentDetails.getNewItemCount());
+            System.out.println(" contentDetails getTotalItemCount " + contentDetails.getTotalItemCount());
+            System.out.println(" contentDetails getActivityType " + contentDetails.getActivityType());
+            System.out.println(" contentDetails values " + contentDetails.values());
+
+        }
+
+        if(sub.getSubscriberSnippet() != null) {
+            System.out.println(" getSubscriberSnippet getChannelId " + sub.getSubscriberSnippet().getChannelId());
+            System.out.println(" getSubscriberSnippet getDescription " + sub.getSubscriberSnippet().getDescription());
+            System.out.println(" getSubscriberSnippet getTitle " + sub.getSubscriberSnippet().getTitle());
+        }
+    }
+
+
 }
