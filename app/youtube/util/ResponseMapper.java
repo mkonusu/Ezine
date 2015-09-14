@@ -74,12 +74,13 @@ public class ResponseMapper {
             System.out.println("getEtag " + subscriptionListResponse.getEtag());
             System.out.println("getEventId "+subscriptionListResponse.getEventId());
             System.out.println("getKind "+subscriptionListResponse.getKind());
-            response.kind = subscriptionListResponse.getKind();
+
 
             System.out.println("getNextPageToken "+subscriptionListResponse.getNextPageToken());
-            response.kind = subscriptionListResponse.getNextPageToken();
+
             System.out.println("getPrevPageToken "+subscriptionListResponse.getPrevPageToken());
-            response.kind = subscriptionListResponse.getPrevPageToken();
+
+            response.kind = subscriptionListResponse.getKind();
 
             System.out.println("getVisitorId "+subscriptionListResponse.getVisitorId());
             System.out.println("getPageInfo "+subscriptionListResponse.getPageInfo());
@@ -87,8 +88,7 @@ public class ResponseMapper {
             if(subscriptionListResponse.getPageInfo() !=null) {
                 response.recordsPerPage = subscriptionListResponse.getPageInfo().getResultsPerPage();
                 response.totalRecords = subscriptionListResponse.getPageInfo().getTotalResults();
-                response.nextPageToken = subscriptionListResponse.getNextPageToken();
-                response.prevPageToken = subscriptionListResponse.getPrevPageToken();
+
             }
 
 
@@ -96,28 +96,56 @@ public class ResponseMapper {
                 List<ChannelDetails> details =  new ArrayList<>(subscriptionListResponse.size());
                 for (Subscription sub : subscriptionListResponse.getItems()) {
                     System.out.println("////// New Resource ///////");
-                    System.out.println("Resource ID " + sub.getSnippet().getResourceId());
-                    System.out.println(" Resource Title " + sub.getSnippet().getTitle());
-                    System.out.println(" Resource getChannelId " + sub.getSnippet().getChannelId());
-                    ChannelDetails channelInfo =  new ChannelDetails();
-                    channelInfo.channelId = sub.getSnippet().getChannelId();
-                    channelInfo.description = sub.getSnippet().getDescription();
-                    channelInfo.title = sub.getSnippet().getTitle();
-                    details.add(channelInfo);
+                    System.out.println("getSnippet ID " + sub.getSnippet().getResourceId());
+                    if(sub.getSnippet().getResourceId() !=null) {
+                        System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId());
+                        System.out.println("getSnippet getResourceId get " + sub.getSnippet().getResourceId().get("channelId"));
+                        System.out.println("getSnippet getResourceId getChannelId " + sub.getSnippet().getResourceId().getChannelId());
+                    }
 
+                    System.out.println(" getSnippet Title " + sub.getSnippet().getTitle());
+                    System.out.println(" getSnippet getChannelId " + sub.getSnippet().getChannelId());
+                    System.out.println(" getSnippet get " + sub.getSnippet().get("channelId"));
+                    System.out.println(" getSnippet getChannelTitle " + sub.getSnippet().getChannelTitle());
+                    System.out.println(" getSnippet getDescription " + sub.getSnippet().getDescription());
 
-                    System.out.println("Resource getDescription " + sub.getSnippet().getDescription());
-                    System.out.println(" Resource getChannelTitle " + sub.getSnippet().getChannelTitle());
                     System.out.println(" Resource getPublishedAt " + sub.getSnippet().getPublishedAt() );
                     System.out.println("Resource getEtag " + sub.getEtag());
                     System.out.println(" Resource getId " + sub.getId());
                     System.out.println(" Resource getKind " + sub.getKind());
 
-                    SubscriptionContentDetails contentDetails = sub.getContentDetails();
-                    System.out.println(" contentDetails getNewItemCount " + contentDetails.getNewItemCount());
-                    System.out.println(" contentDetails getTotalItemCount " + contentDetails.getTotalItemCount());
-                    System.out.println(" contentDetails getActivityType " + contentDetails.getActivityType());
-                    System.out.println(" contentDetails values " + contentDetails.values());
+
+                    System.out.println(" Resource getHigh " + sub.getSnippet().getThumbnails().getHigh().getUrl() +" "+sub.getSnippet().getThumbnails().getHigh().getHeight()+" "+sub.getSnippet().getThumbnails().getHigh().getWidth());
+                    System.out.println(" Resource getMedium " + sub.getSnippet().getThumbnails().getMedium().getUrl()  +" "+sub.getSnippet().getThumbnails().getMedium().getHeight()+" "+sub.getSnippet().getThumbnails().getMedium().getWidth());
+                    System.out.println(" Resource getMaxres " + sub.getSnippet().getThumbnails().getMaxres().getUrl()  +" "+sub.getSnippet().getThumbnails().getMaxres().getHeight()+" "+sub.getSnippet().getThumbnails().getMaxres().getWidth());
+                    System.out.println(" Resource getStandard " + sub.getSnippet().getThumbnails().getStandard().getUrl()  +" "+sub.getSnippet().getThumbnails().getStandard().getHeight()+" "+sub.getSnippet().getThumbnails().getStandard().getWidth());
+                    System.out.println(" Resource getDefault " + sub.getSnippet().getThumbnails().getDefault().getUrl()  +" "+sub.getSnippet().getThumbnails().getDefault().getHeight()+" "+sub.getSnippet().getThumbnails().getDefault().getWidth());
+
+                    if(sub.getContentDetails() != null) {
+                        SubscriptionContentDetails contentDetails = sub.getContentDetails();
+                        System.out.println(" contentDetails getNewItemCount " + contentDetails.getNewItemCount());
+                        System.out.println(" contentDetails getTotalItemCount " + contentDetails.getTotalItemCount());
+                        System.out.println(" contentDetails getActivityType " + contentDetails.getActivityType());
+                        System.out.println(" contentDetails values " + contentDetails.values());
+
+                    }
+
+                    if(sub.getSubscriberSnippet() != null) {
+                        System.out.println(" getSubscriberSnippet getChannelId " + sub.getSubscriberSnippet().getChannelId());
+                        System.out.println(" getSubscriberSnippet getDescription " + sub.getSubscriberSnippet().getDescription());
+                        System.out.println(" getSubscriberSnippet getTitle " + sub.getSubscriberSnippet().getTitle());
+                    }
+
+
+                    ChannelDetails channelInfo =  new ChannelDetails();
+                    channelInfo.channelId = sub.getSnippet().getResourceId().getChannelId();
+                    channelInfo.description = sub.getSnippet().getDescription();
+                    channelInfo.title = sub.getSnippet().getTitle();
+                    details.add(channelInfo);
+
+
+
+
 
                     System.out.println();
                 }
