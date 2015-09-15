@@ -178,7 +178,7 @@ public class YChannel {
             subscriptionsList.setChannelId(channelId);
             //subscriptionsList.setForChannelId(channelId);
 
-            SubscriptionListResponse channelListResponse = subscriptionsList.execute();
+            SubscriptionListResponse channelListResponse = null;//subscriptionsList.execute();
             System.out.println("channel list response "+channelListResponse);
             boolean subscribed = false;
             if(channelListResponse !=null) {
