@@ -59,12 +59,13 @@ public class YChannel {
         try {
 
             System.out.println("in alreadySubscribed "+channelId);
-            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
+            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails,subscriberSnippet");
             subscriptionsList.setMine(true);
             subscriptionsList.setChannelId(channelId);
             //subscriptionsList.setForChannelId(channelId);
 
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
+
             if(channelListResponse !=null) {
                 if(channelListResponse.getItems() != null && channelListResponse.getItems().size() == 1) {
                     System.out.println("in alreadySubscribed subscribed "+channelId);
@@ -172,7 +173,7 @@ public class YChannel {
             //channelsList.setFields("items(contentDetails,id,kind,snippet,topicDetails),kind,nextPageToken,pageInfo,prevPageToken,tokenPagination");
             //ChannelListResponse channelListResponse = channelsList.execute();
 
-            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
+            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails,subscriberSnippet");
             subscriptionsList.setMine(true);
             subscriptionsList.setChannelId(channelId);
             //subscriptionsList.setForChannelId(channelId);

@@ -90,7 +90,7 @@ public class ChannelController extends Controller {
             }
 
 
-            ChannelDetails channelInfo = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));;
+            ChannelDetails channelInfo = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));
             if(channelInfo == null) {
                 System.out.println("Channel not subscribed");
                 channelInfo = ResponseMapper.getChannelResponse(YChannel.subscribe(channelId));
