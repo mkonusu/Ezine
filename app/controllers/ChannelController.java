@@ -98,16 +98,17 @@ public class ChannelController extends Controller {
             } else {
                 System.out.println("already subscribed");
             }
-            if(!channelByUser) {
-                System.out.println("get channel user ");
-                Channel channel = YChannel.getChannelByChannelId(channelId);
-                channelInfo.channelUserName = channel.getContentDetails().getGooglePlusUserId();
-                System.out.println("get channel user "+channelInfo.channelUserName);
-            } else {
-                channelInfo.channelUserName = channelUser;
-            }
+
             // check if exists in db and store
             if(channelInfo != null) {
+                if(!channelByUser) {
+                    System.out.println("get channel user ");
+                    Channel channel = YChannel.getChannelByChannelId(channelId);
+                    channelInfo.channelUserName = channel.getContentDetails().getGooglePlusUserId();
+                    System.out.println("get channel user "+channelInfo.channelUserName);
+                } else {
+                    channelInfo.channelUserName = channelUser;
+                }
                 System.out.println("store in db");
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
                 ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
