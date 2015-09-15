@@ -13,7 +13,7 @@ GET         /api/v1/languages                                          controlle
 GET         /api/v1/user/:userId/languages                             controllers.UserController.subscribedLanguages(userId)
 GET         /api/v1/user/:userId/language/:langCode/subscribe          controllers.SetupController.subscribeLanguage(userId, langCode)
 GET         /api/v1/user/:userId/language/:langCode/unsubscribe        controllers.SetupController.unsubscribeLanguage(userId, langCode)
-GET         /api/v1/channel/:userName                                  controllers.ChannelController.getchannel(userName)
+
 
 POST        /api/v1/verify                                             controllers.UserController.verify()
 POST        /api/v1/register                                           controllers.UserController.register()
