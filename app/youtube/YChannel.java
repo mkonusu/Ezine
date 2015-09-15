@@ -40,6 +40,7 @@ public class YChannel {
 
             return channelListResponse;
         } catch (GoogleJsonResponseException e) {
+            e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
@@ -73,6 +74,7 @@ public class YChannel {
 
             return null;
         } catch (GoogleJsonResponseException e) {
+            e.printStackTrace();;
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
@@ -109,6 +111,7 @@ public class YChannel {
 
 
         } catch (GoogleJsonResponseException e) {
+            e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
@@ -145,6 +148,7 @@ public class YChannel {
 
 
         } catch (GoogleJsonResponseException e) {
+            e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
@@ -208,6 +212,7 @@ public class YChannel {
 
 
         } catch (GoogleJsonResponseException e) {
+            e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
