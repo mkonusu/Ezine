@@ -60,7 +60,7 @@ public class YChannel {
 
             System.out.println("in alreadySubscribed "+channelId);
             YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails,subscriberSnippet");
-            subscriptionsList.setMine(true);
+            //subscriptionsList.setMine(true);
             subscriptionsList.setChannelId(channelId);
             //subscriptionsList.setForChannelId(channelId);
 
