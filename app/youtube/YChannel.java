@@ -57,15 +57,16 @@ public class YChannel {
     public static Subscription alreadySubscribed(String channelId) throws CredentialRequiredException {
         try {
 
-
+            System.out.println("in alreadySubscribed "+channelId);
             YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
             subscriptionsList.setMine(true);
             subscriptionsList.setChannelId(channelId);
-            subscriptionsList.setForChannelId(channelId);
+            //subscriptionsList.setForChannelId(channelId);
 
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
             if(channelListResponse !=null) {
                 if(channelListResponse.getItems() != null && channelListResponse.getItems().size() == 1) {
+                    System.out.println("in alreadySubscribed subscribed "+channelId);
                     return channelListResponse.getItems().get(0);
                 }
             }
@@ -170,7 +171,7 @@ public class YChannel {
             YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
             subscriptionsList.setMine(true);
             subscriptionsList.setChannelId(channelId);
-            subscriptionsList.setForChannelId(channelId);
+            //subscriptionsList.setForChannelId(channelId);
 
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
             System.out.println("channel list response "+channelListResponse);
