@@ -7,6 +7,8 @@ public class CollectionNames {
 
     public static String users = "users";
     public static String languages = "languages";
+    public static String channels = "channels";
+
     public static String idcollection = "idseed";
     public static String loginHistory = "loginHistory";
     public static String session = "session";

@@ -113,7 +113,7 @@ public class ResponseMapper {
             ChannelDetails channelInfo =  new ChannelDetails();
             channelInfo.channelId = (String)sub.getSnippet().get("channelId");
             channelInfo.description = sub.getSnippet().getDescription();
-            channelInfo.title = sub.getSnippet().getTitle();
+            channelInfo.channelTitle = sub.getSnippet().getTitle();
 
             return channelInfo;
         }

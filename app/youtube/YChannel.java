@@ -54,7 +54,7 @@ public class YChannel {
     }
 
 
-    public static SUBSCRIPTION_STATUS alreadySubscribed(String channelId) throws CredentialRequiredException {
+    public static Subscription alreadySubscribed(String channelId) throws CredentialRequiredException {
         try {
 
 
@@ -66,11 +66,11 @@ public class YChannel {
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
             if(channelListResponse !=null) {
                 if(channelListResponse.getItems() != null && channelListResponse.getItems().size() == 1) {
-                    return SUBSCRIPTION_STATUS.ALREADY_SUBSCRIBED;
+                    return channelListResponse.getItems().get(0);
                 }
             }
 
-            return SUBSCRIPTION_STATUS.NOT_SUBSCRIBED;
+            return null;
         } catch (GoogleJsonResponseException e) {
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
@@ -84,29 +84,58 @@ public class YChannel {
 
         }
 
-        return SUBSCRIPTION_STATUS.FAILED_SUBSCRIBE;
+        return null;
     }
 
-    public static Result getChannel(String userName) throws CredentialRequiredException {
+    public static Channel getChannelByUserName(String userName) throws CredentialRequiredException {
         try {
             // Define the API request for retrieving search results.
-            //YouTube.Channels.List channelsList  = YoutubeConnector.getConnection().channels().list("contentDetails");
-            //channelsList.setMine(true);
-            //channelsList.setMaxResults(channelRequest.recordsPerPage);
-            //channelsList.setFields("items(contentDetails,id,kind,snippet,topicDetails),kind,nextPageToken,pageInfo,prevPageToken,tokenPagination");
-            //ChannelListResponse channelListResponse = channelsList.execute();
 
             YouTube.Channels.List channelsList = YoutubeConnector.getConnection().channels().list("snippet,contentDetails");
             channelsList.setForUsername(userName);
-
-
 
             ChannelListResponse channelListResponse = channelsList.execute();
             if(channelListResponse !=null) {
 
                 List<Channel> channels = channelListResponse.getItems();
-                if(channels !=null) {
-                    System.out.println(" channels "+channels.size());
+                if(channels !=null && channels.size() ==1 ) {
+                    return channels.get(0);
+                } else {
+                    System.out.println("empty channels");
+                }
+
+            }
+
+
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+                    + e.getDetails().getMessage());
+        } catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        }   catch (CredentialRequiredException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            throw e;
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Channel getChannelByChannelId(String channelId) throws CredentialRequiredException {
+        try {
+            // Define the API request for retrieving search results.
+
+            YouTube.Channels.List channelsList = YoutubeConnector.getConnection().channels().list("snippet,contentDetails");
+            channelsList.setMine(true);
+            channelsList.setId(channelId);
+
+            ChannelListResponse channelListResponse = channelsList.execute();
+            if(channelListResponse !=null) {
+
+                List<Channel> channels = channelListResponse.getItems();
+                if(channels !=null && channels.size() ==1 ) {
+                    return channels.get(0);
                 } else {
                     System.out.println("empty channels");
                 }

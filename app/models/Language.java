@@ -1,9 +1,11 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * @Author Murali
  */
-public class Language {
+public class Language implements Serializable {
 
     public String _id;
     public String name;

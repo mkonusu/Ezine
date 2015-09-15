@@ -2,16 +2,20 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.services.youtube.model.Channel;
 import com.google.gson.Gson;
 import com.typesafe.config.ConfigFactory;
 import models.ChannelDetails;
 import models.ChannelRequest;
 import models.ChannelResponse;
 
+import models.User;
 import org.apache.commons.lang3.StringUtils;
+import org.jongo.MongoCollection;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import util.CollectionNames;
 import youtube.YChannel;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
@@ -62,14 +66,46 @@ public class ChannelController extends Controller {
         return ok(new Gson().toJson(response));
     }
 
-    public static Result subscribe(String channelId, String langCode) {
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result subscribe() {
         String SUPERUSER = request().getQueryString("SUPERUSER");
+        JsonNode json = request().body().asJson();
+        String channelId =  json.get("channelId").textValue();
+        String langCode =  json.get("langCode").textValue();
+        boolean channelByUser = false;
         try{
-            YChannel.SUBSCRIPTION_STATUS subscriptionStatus = YChannel.alreadySubscribed(channelId);
-            if(subscriptionStatus == YChannel.SUBSCRIPTION_STATUS.NOT_SUBSCRIBED) {
-                return ok(subscriptionStatus.name().toString());
+            if(channelId !=null && channelId.startsWith("/user/")) {
+                channelByUser = true;
+                String userName = channelId.substring(channelId.lastIndexOf("/")+1, channelId.length());
+                System.out.println("Channel User Name "+userName);
+                Channel channel = YChannel.getChannelByUserName(userName);
+                if(channel != null) {
+                    channelId = channel.getId();
+                    System.out.println("Channel id "+channelId );
+                } else {
+                    return ok("Channel does not exists with the name");
+                }
             }
-            ChannelDetails channelInfo =ResponseMapper.getChannelResponse(YChannel.subscribe(channelId));
+
+
+            ChannelDetails channelInfo = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));;
+            if(channelInfo == null) {
+                channelInfo = ResponseMapper.getChannelResponse(YChannel.subscribe(channelId));
+            }
+            if(!channelByUser) {
+                Channel channel = YChannel.getChannelByChannelId(channelId);
+                channelInfo.channelUserName = channel.getContentDetails().getGooglePlusUserId();
+            }
+            // check if exists in db and store
+            if(channelInfo != null) {
+                MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
+                ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
+                if(fromDB == null) {
+                    channelInfo.language = langCode;
+                    channels.insert(channelInfo);
+                }
+            }
+
             return ok(new Gson().toJson(channelInfo));
         }  catch(CredentialRequiredException e) {
             e.printStackTrace();
@@ -81,6 +117,7 @@ public class ChannelController extends Controller {
             }
 
             // response  - set empty or error code
+
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -89,12 +126,4 @@ public class ChannelController extends Controller {
 
             return ok("Success!");
         }
-
-
-    @BodyParser.Of(BodyParser.Json.class)
-    public static Result getchannel(String username) throws CredentialRequiredException {
-        YChannel.getChannel(username);
-        return ok("Success!");
-    }
-
 }
