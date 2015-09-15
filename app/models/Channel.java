@@ -7,7 +7,8 @@ public class Channel {
 
     public String _id;
     public String channelId;
-    public String channelName;
+    public String channelTitle;
+    public String channelUserName;
     public String description;
     public String language;
     public String categoryType;

@@ -9,6 +9,7 @@ import models.ChannelRequest;
 import models.ChannelResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import youtube.YChannel;
@@ -88,5 +89,12 @@ public class ChannelController extends Controller {
 
             return ok("Success!");
         }
+
+
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result getchannel(String username) throws CredentialRequiredException {
+        YChannel.getChannel(username);
+        return ok("Success!");
+    }
 
 }

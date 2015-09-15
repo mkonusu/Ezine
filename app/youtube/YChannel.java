@@ -6,6 +6,7 @@ import com.google.api.services.youtube.model.*;
 import models.ChannelDetails;
 import models.ChannelRequest;
 import models.ChannelResponse;
+import play.mvc.Result;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
 import youtube.util.YoutubeConnector;
@@ -84,6 +85,48 @@ public class YChannel {
         }
 
         return SUBSCRIPTION_STATUS.FAILED_SUBSCRIBE;
+    }
+
+    public static Result getChannel(String userName) throws CredentialRequiredException {
+        try {
+            // Define the API request for retrieving search results.
+            //YouTube.Channels.List channelsList  = YoutubeConnector.getConnection().channels().list("contentDetails");
+            //channelsList.setMine(true);
+            //channelsList.setMaxResults(channelRequest.recordsPerPage);
+            //channelsList.setFields("items(contentDetails,id,kind,snippet,topicDetails),kind,nextPageToken,pageInfo,prevPageToken,tokenPagination");
+            //ChannelListResponse channelListResponse = channelsList.execute();
+
+            YouTube.Channels.List channelsList = YoutubeConnector.getConnection().channels().list("snippet,contentDetails");
+            channelsList.setForUsername(userName);
+
+
+
+            ChannelListResponse channelListResponse = channelsList.execute();
+            if(channelListResponse !=null) {
+
+                List<Channel> channels = channelListResponse.getItems();
+                if(channels !=null) {
+                    System.out.println(" channels "+channels.size());
+                } else {
+                    System.out.println("empty channels");
+                }
+
+            }
+
+
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+                    + e.getDetails().getMessage());
+        } catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        }   catch (CredentialRequiredException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            throw e;
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        return null;
     }
 
     public static Subscription subscribe(String channelId) throws CredentialRequiredException {
