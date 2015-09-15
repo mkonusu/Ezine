@@ -73,6 +73,7 @@ public class ChannelController extends Controller {
         String channelId =  json.get("channelId").textValue();
         String langCode =  json.get("langCode").textValue();
         boolean channelByUser = false;
+        String channelUser = null;
         try{
             if(channelId !=null && channelId.startsWith("/user/")) {
                 channelByUser = true;
@@ -80,6 +81,7 @@ public class ChannelController extends Controller {
                 System.out.println("Channel User Name "+userName);
                 Channel channel = YChannel.getChannelByUserName(userName);
                 if(channel != null) {
+                    channelUser = userName;
                     channelId = channel.getId();
                     System.out.println("Channel id "+channelId );
                 } else {
@@ -90,14 +92,23 @@ public class ChannelController extends Controller {
 
             ChannelDetails channelInfo = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));;
             if(channelInfo == null) {
+                System.out.println("Channel not subscribed");
                 channelInfo = ResponseMapper.getChannelResponse(YChannel.subscribe(channelId));
+                System.out.println("Subscribe channel");
+            } else {
+                System.out.println("already subscribed");
             }
             if(!channelByUser) {
+                System.out.println("get channel user ");
                 Channel channel = YChannel.getChannelByChannelId(channelId);
                 channelInfo.channelUserName = channel.getContentDetails().getGooglePlusUserId();
+                System.out.println("get channel user "+channelInfo.channelUserName);
+            } else {
+                channelInfo.channelUserName = channelUser;
             }
             // check if exists in db and store
             if(channelInfo != null) {
+                System.out.println("store in db");
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
                 ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
                 if(fromDB == null) {
