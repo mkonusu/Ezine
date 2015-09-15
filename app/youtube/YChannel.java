@@ -173,31 +173,36 @@ public class YChannel {
             subscriptionsList.setForChannelId(channelId);
 
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
+            System.out.println("channel list response "+channelListResponse);
+            boolean subscribed = false;
             if(channelListResponse !=null) {
                 if(channelListResponse.getItems() != null && channelListResponse.getItems().size() == 1) {
+                    subscribed = true;
                     return channelListResponse.getItems().get(0);
-                } else {
-                    // Create a resourceId that identifies the channel ID.
-                    ResourceId resourceId = new ResourceId();
-                    resourceId.setChannelId(channelId);
-                    resourceId.setKind("youtube#channel");
-
-                    // Create a snippet that contains the resourceId.
-                    SubscriptionSnippet snippet = new SubscriptionSnippet();
-                    snippet.setResourceId(resourceId);
-
-
-                    // Create a request to add the subscription and send the request.
-                    // The request identifies subscription metadata to insert as well
-                    // as information that the API server should return in its response.
-                    Subscription subscription = new Subscription();
-                    subscription.setSnippet(snippet);
-                    YouTube.Subscriptions.Insert subscriptionInsert =
-                            YoutubeConnector.getConnection().subscriptions().insert("snippet,contentDetails", subscription);
-                    Subscription returnedSubscription = subscriptionInsert.execute();
-
-                    return returnedSubscription;
                 }
+            }
+            if(!subscribed) {
+                System.out.println("subscribe to channel "+channelId);
+                // Create a resourceId that identifies the channel ID.
+                ResourceId resourceId = new ResourceId();
+                resourceId.setChannelId(channelId);
+                resourceId.setKind("youtube#channel");
+
+                // Create a snippet that contains the resourceId.
+                SubscriptionSnippet snippet = new SubscriptionSnippet();
+                snippet.setResourceId(resourceId);
+
+
+                // Create a request to add the subscription and send the request.
+                // The request identifies subscription metadata to insert as well
+                // as information that the API server should return in its response.
+                Subscription subscription = new Subscription();
+                subscription.setSnippet(snippet);
+                YouTube.Subscriptions.Insert subscriptionInsert =
+                        YoutubeConnector.getConnection().subscriptions().insert("snippet,contentDetails", subscription);
+                Subscription returnedSubscription = subscriptionInsert.execute();
+
+                return returnedSubscription;
             }
 
 
