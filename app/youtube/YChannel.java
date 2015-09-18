@@ -133,9 +133,10 @@ public class YChannel {
         try {
             // Define the API request for retrieving search results.
 
-            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
+            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails,subscriberSnippet");
             subscriptionsList.setMine(true);
-            subscriptionsList.setChannelId(channelId);
+            subscriptionsList.setForChannelId(channelId);
+
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
 
             if(channelListResponse !=null) {
