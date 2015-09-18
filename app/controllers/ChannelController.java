@@ -104,12 +104,15 @@ public class ChannelController extends Controller {
                 if(!channelByUser) {
                      channelInfo.channelUserName = channelUser;
                 }
-                System.out.println("store in db");
+                System.out.println("b4 store in db "+channelInfo.channelId);
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
                 ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
                 if(fromDB == null) {
+                    System.out.println("store in db "+channelInfo.channelId);
                     channelInfo.language = langCode;
                     channels.insert(channelInfo);
+                    fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
+                    return ok(new Gson().toJson(fromDB));
                 }
             }
 
