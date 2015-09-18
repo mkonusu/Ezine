@@ -107,6 +107,7 @@ public class ChannelController extends Controller {
                 System.out.println("b4 store in db "+channelInfo.channelId);
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
                 ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
+                System.out.println("already exists in db "+fromDB);
                 if(fromDB == null) {
                     System.out.println("store in db "+channelInfo.channelId);
                     channelInfo.language = langCode;
