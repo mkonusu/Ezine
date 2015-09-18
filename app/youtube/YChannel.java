@@ -43,12 +43,12 @@ public class YChannel {
             return channelListResponse;
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+            System.err.println("There was a service error getChannelByUserName: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
             throw e;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -115,12 +115,12 @@ public class YChannel {
 
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+            System.err.println("There was a service error getChannelByUserName: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
             throw e;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -147,12 +147,12 @@ public class YChannel {
 
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+            System.err.println("There was a service error in getChannelByChannelId: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
         } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error in getChannelByChannelId: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error in getChannelByChannelId: " + e.getCause() + " : " + e.getMessage());
             throw e;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -197,18 +197,21 @@ public class YChannel {
 
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+            System.err.println("There was a service error getChannelByUserName: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
+
+            System.out.println(" already exists? "+e.getDetails().getMessage().equalsIgnoreCase(ALREADY_SUBSCRIBED));
             if(e.getDetails().getMessage().equalsIgnoreCase(ALREADY_SUBSCRIBED)) {
+
                 Subscription sub = YChannel.getChannelByChannelId(channelId);
                 if(sub!=null) {
                     return sub;
                 }
             }
         } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            System.err.println("There was an IO error getChannelByUserName: " + e.getCause() + " : " + e.getMessage());
             throw e;
         } catch (Throwable t) {
             t.printStackTrace();
