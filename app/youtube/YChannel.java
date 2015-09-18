@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class YChannel {
 
+    private final static String ALREADY_SUBSCRIBED = "The subscription that you are trying to create already exists.";
+
     public enum SUBSCRIPTION_STATUS {
         SUBSCRIBED, UNSUBSCRIBED, ALREADY_SUBSCRIBED, FAILED_SUBSCRIBE, NOT_SUBSCRIBED
     }
@@ -127,24 +129,19 @@ public class YChannel {
         return null;
     }
 
-    public static Channel getChannelByChannelId(String channelId) throws CredentialRequiredException {
+    public static Subscription getChannelByChannelId(String channelId) throws CredentialRequiredException {
         try {
             // Define the API request for retrieving search results.
 
-            YouTube.Channels.List channelsList = YoutubeConnector.getConnection().channels().list("snippet,contentDetails");
-            channelsList.setMine(true);
-            channelsList.setId(channelId);
+            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
+            subscriptionsList.setMine(true);
+            subscriptionsList.setChannelId(channelId);
+            SubscriptionListResponse channelListResponse = subscriptionsList.execute();
 
-            ChannelListResponse channelListResponse = channelsList.execute();
             if(channelListResponse !=null) {
-
-                List<Channel> channels = channelListResponse.getItems();
-                if(channels !=null && channels.size() ==1 ) {
-                    return channels.get(0);
-                } else {
-                    System.out.println("empty channels");
+                if(channelListResponse.getItems() !=null && channelListResponse.getItems().size() ==1) {
+                    return channelListResponse.getItems().get(0);
                 }
-
             }
 
 
@@ -173,21 +170,7 @@ public class YChannel {
             //channelsList.setFields("items(contentDetails,id,kind,snippet,topicDetails),kind,nextPageToken,pageInfo,prevPageToken,tokenPagination");
             //ChannelListResponse channelListResponse = channelsList.execute();
 
-            YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails,subscriberSnippet");
-            subscriptionsList.setMine(true);
-            subscriptionsList.setChannelId(channelId);
-            //subscriptionsList.setForChannelId(channelId);
 
-            SubscriptionListResponse channelListResponse = null;//subscriptionsList.execute();
-            System.out.println("channel list response "+channelListResponse);
-            boolean subscribed = false;
-            if(channelListResponse !=null) {
-                if(channelListResponse.getItems() != null && channelListResponse.getItems().size() == 1) {
-                    subscribed = true;
-                    return channelListResponse.getItems().get(0);
-                }
-            }
-            if(!subscribed) {
                 System.out.println("subscribe to channel "+channelId);
                 // Create a resourceId that identifies the channel ID.
                 ResourceId resourceId = new ResourceId();
@@ -209,13 +192,19 @@ public class YChannel {
                 Subscription returnedSubscription = subscriptionInsert.execute();
 
                 return returnedSubscription;
-            }
+
 
 
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
+            if(e.getDetails().getMessage().equalsIgnoreCase(ALREADY_SUBSCRIBED)) {
+                Subscription sub = YChannel.getChannelByChannelId(channelId);
+                if(sub!=null) {
+                    return sub;
+                }
+            }
         } catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {

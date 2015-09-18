@@ -102,12 +102,7 @@ public class ChannelController extends Controller {
             // check if exists in db and store
             if(channelInfo != null) {
                 if(!channelByUser) {
-                    System.out.println("get channel user ");
-                    Channel channel = YChannel.getChannelByChannelId(channelId);
-                    channelInfo.channelUserName = channel.getContentDetails().getGooglePlusUserId();
-                    System.out.println("get channel user "+channelInfo.channelUserName);
-                } else {
-                    channelInfo.channelUserName = channelUser;
+                     channelInfo.channelUserName = channelUser;
                 }
                 System.out.println("store in db");
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
