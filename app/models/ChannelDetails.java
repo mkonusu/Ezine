@@ -2,6 +2,7 @@ package models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Murali on 28-08-2015.
@@ -21,5 +22,7 @@ public class ChannelDetails implements Serializable {
     public String categoryType;
     public String subscribedOn;
     public String subscribedBy;
+
+    public ThumbnailInfo thumbnailInfo;
 
 }

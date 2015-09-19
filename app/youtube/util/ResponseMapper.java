@@ -1,10 +1,7 @@
 package youtube.util;
 
 import com.google.api.services.youtube.model.*;
-import models.ChannelDetails;
-import models.ChannelResponse;
-import models.SearchResponse;
-import models.SearchVideo;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +114,42 @@ public class ResponseMapper {
             System.out.println(" channel id from response "+channelInfo.channelId);
             channelInfo.description = sub.getSnippet().getDescription();
             channelInfo.channelTitle = sub.getSnippet().getTitle();
+
+            if(sub.getSnippet().getThumbnails() !=null && sub.getSnippet().getThumbnails().size()>0) {
+
+                ThumbnailInfo thumbnailInfo = new ThumbnailInfo();
+                Thumbnail tdHigh = sub.getSnippet().getThumbnails().getHigh();
+                Thumbnail tdMaxres = sub.getSnippet().getThumbnails().getMaxres();
+                Thumbnail tdMedium = sub.getSnippet().getThumbnails().getMedium();
+                Thumbnail tdStandard = sub.getSnippet().getThumbnails().getStandard();
+                Thumbnail tdDefault = sub.getSnippet().getThumbnails().getDefault();
+
+                if(tdHigh != null) {
+                    thumbnailInfo.highUrl = tdHigh.getUrl();
+                    if(tdHigh.getHeight() !=null && tdHigh.getHeight() >0 ) thumbnailInfo.highHeight = tdHigh.getHeight();
+                    if(tdHigh.getWidth() !=null && tdHigh.getWidth() >0 ) thumbnailInfo.highWidth = tdHigh.getWidth();
+                }
+                if(tdMaxres != null) {
+                    thumbnailInfo.maxresUrl = tdMaxres.getUrl();
+                    if(tdMaxres.getHeight() !=null && tdMaxres.getHeight() >0 ) thumbnailInfo.maxresHeight = tdMaxres.getHeight();
+                    if(tdMaxres.getWidth() !=null && tdMaxres.getWidth() >0 ) thumbnailInfo.maxresWidth = tdMaxres.getWidth();
+                }
+                if(tdMedium != null) {
+                    thumbnailInfo.mediumUrl = tdMedium.getUrl();
+                    if(tdMedium.getHeight() !=null && tdMedium.getHeight() >0 ) thumbnailInfo.mediumHeight = tdMedium.getHeight();
+                    if(tdMedium.getWidth() !=null && tdMedium.getWidth() >0 ) thumbnailInfo.mediumWidth = tdMedium.getWidth();
+                }
+                if(tdStandard != null) {
+                    thumbnailInfo.standardUrl = tdStandard.getUrl();
+                    if(tdStandard.getHeight() !=null && tdStandard.getHeight() >0 ) thumbnailInfo.standardHeight = tdStandard.getHeight();
+                    if(tdStandard.getWidth() !=null && tdStandard.getWidth() >0 ) thumbnailInfo.standardWidth = tdStandard.getWidth();
+                }
+                if(tdDefault != null) {
+                    thumbnailInfo.defaultUrl = tdDefault.getUrl();
+                    if(tdDefault.getHeight() !=null && tdDefault.getHeight() >0 ) thumbnailInfo.defaultHeight = tdDefault.getHeight();
+                    if(tdDefault.getWidth() !=null && tdDefault.getWidth() >0 ) thumbnailInfo.defaultWidth = tdDefault.getWidth();
+                }
+            }
 
             return channelInfo;
         }

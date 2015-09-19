@@ -112,9 +112,12 @@ public class ChannelController extends Controller {
                     System.out.println("store in db "+channelInfo.channelId);
                     channelInfo.language = langCode;
                     channels.insert(channelInfo);
-                    fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
-                    return ok(new Gson().toJson(fromDB));
+                } else {
+                    channelInfo._id=fromDB._id;
+                    channels.save(channelInfo);
                 }
+                fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
+                return ok(new Gson().toJson(fromDB));
             }
 
             return ok(new Gson().toJson(channelInfo));
