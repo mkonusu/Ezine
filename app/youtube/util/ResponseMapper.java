@@ -149,6 +149,8 @@ public class ResponseMapper {
                     if(tdDefault.getHeight() !=null && tdDefault.getHeight() >0 ) thumbnailInfo.defaultHeight = tdDefault.getHeight();
                     if(tdDefault.getWidth() !=null && tdDefault.getWidth() >0 ) thumbnailInfo.defaultWidth = tdDefault.getWidth();
                 }
+
+                channelInfo.thumbnailInfo = thumbnailInfo;
             }
 
             return channelInfo;
