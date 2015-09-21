@@ -1,0 +1,27 @@
+[
+
+  { "_id" : "GCQmVzdCBvZiBZb3VUdWJl", "name": "Best of YouTube", "yid":"", "code":"hin", "shortCode":"hi", "description": "","isActive":"true", "icon":"languages/hin.gif" },
+
+  { "_id" : "GCTXVzaWM", "name": "Music", "code":"eng", "shortCode":"en", "description": "","isActive":"true", "icon":"languages/eng.gif" },
+
+  { "_id" : "GCQ29tZWR5", "name": "Comedy", "code":"tel", "shortCode":"te", "description": "","isActive":"true", "icon":"languages/tel.gif" },
+
+  { "_id" : "GCRmlsbSAmIEVudGVydGFpbm1lbnQ", "name": "Film & Entertainment", "code":"tam", "shortCode":"ta", "description": "","isActive":"true", "icon":"languages/tam.gif" },
+
+  { "_id" : "GCR2FtaW5n", "name": "Gaming", "code":"mal", "shortCode":"ml", "description": "","isActive":"true", "icon":"languages/mal.gif" },
+
+  { "_id" : "GCQmVhdXR5ICYgRmFzaGlvb", "name": "Beauty & Fashion", "code":"kan", "shortCode":"ka", "description": "","isActive":"true", "icon":"languages/kan.gif" },
+
+  { "_id" : "GCRnJvbSBUVg", "name": "From TV", "code":"mar", "shortCode":"mr", "description": "","isActive":"true", "icon":"languages/mar.gif" },
+
+  { "_id" : "GCQXV0b21vdGl2ZQ", "name": "Automotive", "code":"ben", "shortCode":"be", "description": "","isActive":"true", "icon":"languages/ben.gif" },
+
+  { "_id" : "GCVG9wIFlvdVR1YmUgQ29sbGVjdGlvbnM", "name": "Top YouTube Collections", "code":"ori", "shortCode":"or", "description": "","isActive":"true", "icon":"languages/ori.gif" },
+
+  { "_id" : "GCVG9wIEJsb2dz", "name": "Top Blogs", "code":"pan", "shortCode":"pa",  "description": "","isActive":"true", "icon":"languages/pan.gif" },
+
+  { "_id" : "GCQW5pbWF0aW9u", "name": "Animation", "code":"urd", "shortCode":"ur", "description": "","isActive":"true", "icon":"languages/urd.gif" },
+
+  { "_id" : "GCU3BvcnRz", "name": "Sports", "code":"guj", "shortCode":"gu", "description": "","isActive":"true", "icon":"languages/guj.gif" }
+
+]
