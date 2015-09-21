@@ -78,12 +78,15 @@ public class UserController  extends Controller {
         return fromDB;
     }
 
-    public static User getUser(String userId) {
+    public static Result getUser(String userId) {
 
         MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
         User fromDB = users.findOne("{_id : #}", userId).as(User.class);
+        if(fromDB != null) {
+            fromDB.password = "";
+        }
 
-        return fromDB;
+        return ok(new Gson().toJson(fromDB));
     }
 
 
