@@ -80,17 +80,12 @@ public class ChannelController extends Controller {
         ChannelResponse response = null;
         String SUPERUSER = request().getQueryString("SUPERUSER");
         try {
-            ObjectMapper om = new ObjectMapper();
-            ChannelRequest channelRequest;
-            if (request().body() == null || request().body().asJson() == null) {
 
-                    channelRequest = new ChannelRequest(SearchController.DEFAULT_RECORDS_PER_PAGE, 1);
-
-            } else {
+            ChannelRequest channelRequest = null;
+            if (request().body() != null || request().body().asJson() != null) {
                 JsonNode json = request().body().asJson();
                 channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
             }
-
 
             response = ResponseMapper.getChannelResponse(YChannel.list(channelRequest));
 
@@ -137,7 +132,7 @@ public class ChannelController extends Controller {
             }
 
 
-            ChannelDetails channelInfo = null;//ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));
+            ChannelDetails channelInfo = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));
             if(channelInfo == null) {
                 System.out.println("Channel not subscribed");
                 channelInfo = ResponseMapper.getChannelResponse(YChannel.subscribe(channelId));

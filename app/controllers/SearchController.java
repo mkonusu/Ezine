@@ -8,6 +8,7 @@ import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
 import models.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import youtube.YSearch;
@@ -19,26 +20,21 @@ import java.io.File;
 
 public class SearchController extends Controller {
 
-    private static String DEFAULT_SEARCH_FILE = "public/files/default-search.json";
-    public static final int DEFAULT_RECORDS_PER_PAGE = 10;
 
-    public static Result search(String searchKey) {
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result search() {
 
         SearchResponse response = null;
         String SUPERUSER = request().getQueryString("SUPERUSER");
         try {
-            ObjectMapper om = new ObjectMapper();
-            SearchRequest searchRequest;
-            if (request().body() == null || request().body().asJson() == null) {
-                if(StringUtils.trimToNull(searchKey) !=null ) {
-                    searchRequest = new SearchRequest(searchKey, DEFAULT_RECORDS_PER_PAGE);
-                } else {
-                    JsonNode searchReqNode = om.readTree(new File(DEFAULT_SEARCH_FILE));
-                    searchRequest = om.treeToValue(searchReqNode, SearchRequest.class);
-                }
-            } else {
+
+            SearchRequest searchRequest = null;
+            if (request().body() != null || request().body().asJson() != null) {
+
                 JsonNode json = request().body().asJson();
                 searchRequest = new Gson().fromJson(json.toString(), models.SearchRequest.class);
+            } else {
+                // throw error message
             }
 
             SearchListResponse result = search(searchRequest);

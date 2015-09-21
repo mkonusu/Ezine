@@ -19,6 +19,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
+import org.apache.commons.lang3.StringUtils;
 import youtube.util.CredentialRequiredException;
 import youtube.util.YoutubeConnector;
 
@@ -43,18 +44,33 @@ public class YSearch {
 
         try {
             // Define the API request for retrieving search results.
-            YouTube.Search.List search = YoutubeConnector.getConnectionForSearch().search().list("id,snippet");
+            YouTube.Search.List search = YoutubeConnector.getConnection().search().list("id,snippet");
 
             // Set your developer key from the {{ Google Cloud Console }} for
             // non-authenticated requests. See:
             // {{ https://cloud.google.com/console }}
             String apiKey = ConfigFactory.load().getString("youtube.apikey");
             search.setKey(apiKey);
-            search.setQ(searchRequest.searchKey);
+            if(StringUtils.trimToNull(searchRequest.searchKey) !=null) {
+                search.setQ(searchRequest.searchKey);
+            }
+            if(StringUtils.trimToNull(searchRequest.order) != null) {
+                search.setOrder(searchRequest.order);
+            }
+            if(StringUtils.trimToNull(searchRequest.pageToken) != null) {
+                search.setPageToken(searchRequest.pageToken);
+            }
+            if(StringUtils.trimToNull(searchRequest.channelId) != null) {
+                search.setChannelId(searchRequest.channelId);
+            }
+            if( searchRequest.recordsPerPage> 0) {
+                search.setMaxResults(searchRequest.recordsPerPage);
+            }
 
             // Restrict the search results to only include videos. See:
             // https://developers.google.com/youtube/v3/docs/search/list#type
             search.setType("video");
+
 
             // To increase efficiency, only retrieve the fields that the
             // application uses.

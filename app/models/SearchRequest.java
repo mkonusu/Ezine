@@ -11,6 +11,8 @@ public class SearchRequest implements Serializable {
     public String searchKey;
     public long recordsPerPage = 10;
     public String pageToken;
+    public String order;
+    public String channelId;
 
 
     public SearchRequest() {
