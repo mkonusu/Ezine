@@ -21,6 +21,7 @@ import youtube.util.ResponseMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -154,10 +155,13 @@ public class ChannelController extends Controller {
                 MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
                 ChannelDetails fromDB = channels.findOne("{channelId :#}", channelInfo.channelId).as(ChannelDetails.class);
                 System.out.println("already exists in db "+fromDB);
+                channelInfo.language = langCode;
+                channelInfo.active = true;
+
                 if(fromDB == null) {
-                    System.out.println("store in db "+channelInfo.channelId);
-                    channelInfo.language = langCode;
+                    System.out.println("store in db " + channelInfo.channelId);
                     channels.insert(channelInfo);
+
                 } else {
                     channelInfo._id=fromDB._id;
                     channels.save(channelInfo);
@@ -184,6 +188,8 @@ public class ChannelController extends Controller {
             // response  - set empty or error code
         }
 
-            return ok("Success!");
-        }
+        return ok("Success!");
+    }
+
+
 }
