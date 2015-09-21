@@ -84,6 +84,8 @@ public class UserController  extends Controller {
         User fromDB = users.findOne("{_id : #}", userId).as(User.class);
         if(fromDB != null) {
             fromDB.password = "";
+        } else {
+            // throw exception
         }
 
         return ok(new Gson().toJson(fromDB));
