@@ -43,14 +43,17 @@ public class YSearch {
     public static SearchListResponse videos(SearchRequest searchRequest) throws CredentialRequiredException {
 
         try {
+
             // Define the API request for retrieving search results.
             YouTube.Search.List search = YoutubeConnector.getConnection().search().list("id,snippet");
 
             // Set your developer key from the {{ Google Cloud Console }} for
             // non-authenticated requests. See:
             // {{ https://cloud.google.com/console }}
+
             String apiKey = ConfigFactory.load().getString("youtube.apikey");
-            search.setKey(apiKey);
+            //search.setKey(apiKey);
+
             if(StringUtils.trimToNull(searchRequest.searchKey) !=null) {
                 search.setQ(searchRequest.searchKey);
             }
@@ -92,6 +95,6 @@ public class YSearch {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-         return null;
+        return null;
     }
 }
