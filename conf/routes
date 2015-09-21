@@ -6,7 +6,7 @@
 GET         /                                                          controllers.Application.index
 
 GET         /Callback                                                  controllers.Application.callbackHandler()
-GET         /api/v1/user/:userId/language/:langCode/channels           controllers.ChannelController.listChannels(userId, langCode)
+GET         /api/v1/youtubeLogin/:channelId                            controllers.ChannelController.youtubeLogin(channelId)
 
 GET         /api/v1/languages                                          controllers.SetupController.languages()
 GET         /api/v1/user/:userId/languages                             controllers.UserController.subscribedLanguages(userId)

@@ -75,19 +75,13 @@ public class ChannelController extends Controller {
         return ok(new Gson().toJson(response));
     }
 
-    public static Result listChannels(String userId, String langCode) {
+    public static Result youtubeLogin(String channelId) {
 
-        ChannelResponse response = null;
+        ChannelDetails response = null;
         String SUPERUSER = request().getQueryString("SUPERUSER");
         try {
 
-            ChannelRequest channelRequest = null;
-            if (request().body() != null || request().body().asJson() != null) {
-                JsonNode json = request().body().asJson();
-                channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
-            }
-
-            response = ResponseMapper.getChannelResponse(YChannel.list(channelRequest));
+            response = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));
 
         }  catch(CredentialRequiredException e) {
             e.printStackTrace();
