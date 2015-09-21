@@ -5,13 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.youtube.model.Channel;
 import com.google.gson.Gson;
 import com.typesafe.config.ConfigFactory;
-import models.ChannelDetails;
-import models.ChannelRequest;
-import models.ChannelResponse;
+import models.*;
 
-import models.User;
 import org.apache.commons.lang3.StringUtils;
 import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
+import play.Logger;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,13 +19,60 @@ import youtube.YChannel;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @Author Murali Konusu
  */
 public class ChannelController extends Controller {
 
-    ChannelResponse channelResponse = null;
+    ChannelResponse channelResponse = new ChannelResponse();
+
+    public static Result getChannels() {
+
+        ChannelResponse response = new ChannelResponse();
+
+        try {
+            ObjectMapper om = new ObjectMapper();
+            ChannelRequest channelRequest;
+            if (request().body() == null || request().body().asJson() == null) {
+               // throw exception
+                return ok("invalid request");
+            } else {
+                JsonNode json = request().body().asJson();
+                channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
+            }
+
+            MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
+            List<ChannelDetails> channelsList = new ArrayList<>();
+            Pagination pagination  = channelRequest.pagination;
+            try (MongoCursor<ChannelDetails> cursor = channels.find("{language : #}", channelRequest.language)
+                    .skip(pagination.recordsPerPage * (pagination.pageNo - 1)).limit(pagination.recordsPerPage)
+                    .as(ChannelDetails.class)){
+
+                while (cursor.hasNext()){
+                    ChannelDetails resp = cursor.next();
+                    channelsList.add(resp);
+                }
+            } catch (IOException e){
+                Logger.error("Error processing jobs : " + e.getMessage());
+            }
+
+            long channelsCount = channels.count("{language : #}", channelRequest.language);
+            response.subscribedChannels = channelsList;
+            response.pagination = channelRequest.pagination;
+            response.pagination.totalRecords = channelsCount;
+
+        }  catch(Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return ok(new Gson().toJson(response));
+    }
 
     public static Result listChannels(String userId, String langCode) {
 
@@ -37,7 +83,7 @@ public class ChannelController extends Controller {
             ChannelRequest channelRequest;
             if (request().body() == null || request().body().asJson() == null) {
 
-                    channelRequest = new ChannelRequest(SearchController.DEFAULT_RECORDS_PER_PAGE);
+                    channelRequest = new ChannelRequest(SearchController.DEFAULT_RECORDS_PER_PAGE, 1);
 
             } else {
                 JsonNode json = request().body().asJson();

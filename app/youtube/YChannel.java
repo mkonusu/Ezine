@@ -38,6 +38,7 @@ public class YChannel {
 
             YouTube.Subscriptions.List subscriptionsList = YoutubeConnector.getConnection().subscriptions().list("snippet,contentDetails");
             subscriptionsList.setMine(true);
+            subscriptionsList.setMaxResults((long)channelRequest.pagination.recordsPerPage);
             SubscriptionListResponse channelListResponse = subscriptionsList.execute();
 
             return channelListResponse;

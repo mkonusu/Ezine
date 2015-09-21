@@ -77,14 +77,16 @@ public class ResponseMapper {
 
             System.out.println("getPrevPageToken "+subscriptionListResponse.getPrevPageToken()); // W
 
-            response.kind = subscriptionListResponse.getKind();
+            //response.kind = subscriptionListResponse.getKind();
 
             System.out.println("getVisitorId "+subscriptionListResponse.getVisitorId()); // NW
             System.out.println("getPageInfo "+subscriptionListResponse.getPageInfo()); // W
             System.out.println("getTokenPagination "+subscriptionListResponse.getTokenPagination()); // W
+
             if(subscriptionListResponse.getPageInfo() !=null) {
-                response.recordsPerPage = subscriptionListResponse.getPageInfo().getResultsPerPage(); // W
-                response.totalRecords = subscriptionListResponse.getPageInfo().getTotalResults(); // W
+
+                 subscriptionListResponse.getPageInfo().getResultsPerPage(); // W
+                 subscriptionListResponse.getPageInfo().getTotalResults(); // W
 
             }
 

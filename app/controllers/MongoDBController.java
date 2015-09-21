@@ -34,7 +34,6 @@ public class MongoDBController extends Controller{
         String db = ConfigFactory.load().getString("mongodb.db");
         database = client.getDB(db);
         jongo = new Jongo(client.getDB(db));
-
     }
 
     public static MongoCollection getCollection (String name){

@@ -5,20 +5,19 @@ package models;
  */
 public class ChannelRequest {
 
-    public String channelKey;
-    public long recordsPerPage = 10;
-    public String pageToken;
+    public Pagination pagination;
+    public String language;
 
     public ChannelRequest() {
 
     }
 
-    public ChannelRequest(long recordsPerPage) {
-        this.recordsPerPage = recordsPerPage;
+    public ChannelRequest(int recordsPerPage, int pageNo) {
+       this.pagination = new Pagination(recordsPerPage, pageNo);
     }
 
-    public ChannelRequest(long recordsPerPage, String pageToken) {
-        this.recordsPerPage = recordsPerPage;
-        this.pageToken = pageToken;
+    public ChannelRequest(int recordsPerPage, int pageNo, String language) {
+        this.pagination = new Pagination(recordsPerPage, pageNo);
+        this.language = language;
     }
 }
