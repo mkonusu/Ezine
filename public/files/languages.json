@@ -1,27 +1,27 @@
 [
 
-  { "_id" : "hin", "name": "Hindi", "code":"hin", "description": "","isActive":"true", "icon":"languages/hin.gif" },
+  { "_id" : "hin", "name": "Hindi", "code":"hin", "shortCode":"hi", "description": "","isActive":"true", "icon":"languages/hin.gif" },
 
-  { "_id" : "eng", "name": "English", "code":"eng", "description": "","isActive":"true", "icon":"languages/eng.gif" },
+  { "_id" : "eng", "name": "English", "code":"eng", "shortCode":"en", "description": "","isActive":"true", "icon":"languages/eng.gif" },
 
-  { "_id" : "tel", "name": "Telugu", "code":"tel", "description": "","isActive":"true", "icon":"languages/tel.gif" },
+  { "_id" : "tel", "name": "Telugu", "code":"tel", "shortCode":"te", "description": "","isActive":"true", "icon":"languages/tel.gif" },
 
-  { "_id" : "tam", "name": "Tamil", "code":"tam", "description": "","isActive":"true", "icon":"languages/tam.gif" },
+  { "_id" : "tam", "name": "Tamil", "code":"tam", "shortCode":"ta", "description": "","isActive":"true", "icon":"languages/tam.gif" },
 
-  { "_id" : "mal", "name": "Malayalam", "code":"mal", "description": "","isActive":"true", "icon":"languages/mal.gif" },
+  { "_id" : "mal", "name": "Malayalam", "code":"mal", "shortCode":"ml", "description": "","isActive":"true", "icon":"languages/mal.gif" },
 
-  { "_id" : "kan", "name": "Kannada", "code":"kan", "description": "","isActive":"true", "icon":"languages/kan.gif" },
+  { "_id" : "kan", "name": "Kannada", "code":"kan", "shortCode":"ka", "description": "","isActive":"true", "icon":"languages/kan.gif" },
 
-  { "_id" : "mar", "name": "Marathi", "code":"mar", "description": "","isActive":"true", "icon":"languages/mar.gif" },
+  { "_id" : "mar", "name": "Marathi", "code":"mar", "shortCode":"mr", "description": "","isActive":"true", "icon":"languages/mar.gif" },
 
-  { "_id" : "ben", "name": "Bengali", "code":"ben", "description": "","isActive":"true", "icon":"languages/ben.gif" },
+  { "_id" : "ben", "name": "Bengali", "code":"ben", "shortCode":"be", "description": "","isActive":"true", "icon":"languages/ben.gif" },
 
-  { "_id" : "ori", "name": "Oriya", "code":"ori", "description": "","isActive":"true", "icon":"languages/ori.gif" },
+  { "_id" : "ori", "name": "Oriya", "code":"ori", "shortCode":"or", "description": "","isActive":"true", "icon":"languages/ori.gif" },
 
-  { "_id" : "pan", "name": "Punjabi", "code":"pan",  "description": "","isActive":"true", "icon":"languages/pan.gif" },
+  { "_id" : "pan", "name": "Punjabi", "code":"pan", "shortCode":"pa",  "description": "","isActive":"true", "icon":"languages/pan.gif" },
 
-  { "_id" : "urd", "name": "Urdu", "code":"urd", "description": "","isActive":"true", "icon":"languages/urd.gif" },
+  { "_id" : "urd", "name": "Urdu", "code":"urd", "shortCode":"ur", "description": "","isActive":"true", "icon":"languages/urd.gif" },
 
-  { "_id" : "guj", "name": "Gujarati", "code":"guj", "description": "","isActive":"true", "icon":"languages/guj.gif" }
+  { "_id" : "guj", "name": "Gujarati", "code":"guj", "shortCode":"gu", "description": "","isActive":"true", "icon":"languages/guj.gif" }
 
 ]
