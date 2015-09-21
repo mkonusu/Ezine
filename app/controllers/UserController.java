@@ -72,6 +72,16 @@ public class UserController  extends Controller {
         MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
 
         User fromDB = users.findOne("{email : #, password : #}", user.email, passwd).as(User.class);
+        if(fromDB != null) {
+            fromDB.password = "";
+        }
+        return fromDB;
+    }
+
+    public static User getUser(String userId) {
+
+        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+        User fromDB = users.findOne("{_id : #}", userId).as(User.class);
 
         return fromDB;
     }
