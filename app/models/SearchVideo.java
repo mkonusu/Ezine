@@ -12,6 +12,6 @@ public class SearchVideo {
     public String description;
     public String title;
 
-    public String thumbnailUrl;
+    public ThumbnailInfo thumbnailInfo;
 
 }

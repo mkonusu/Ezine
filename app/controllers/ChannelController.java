@@ -181,4 +181,16 @@ public class ChannelController extends Controller {
     }
 
 
+    public static Result categories() {
+
+        try {
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return ok();
+    }
+
+
 }

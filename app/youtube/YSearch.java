@@ -17,6 +17,8 @@ package youtube;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoListResponse;
 import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -79,9 +81,11 @@ public class YSearch {
             // application uses.
             search.setFields("kind,nextPageToken,pageInfo,prevPageToken,tokenPagination,items(id/kind,id/videoId,snippet/title,snippet/channelId,snippet/thumbnails/default/url)");
             search.setMaxResults(searchRequest.recordsPerPage);
-
+            //search.set
             // Call the API and print results.
             SearchListResponse searchListResponse = search.execute();
+
+
 
             return searchListResponse;
         } catch (GoogleJsonResponseException e) {
@@ -91,6 +95,33 @@ public class YSearch {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         }   catch (CredentialRequiredException e) {
                 System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            throw e;
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Video video(String  videoId) throws CredentialRequiredException {
+        try {
+
+            // Define the API request for retrieving search results.
+            YouTube.Videos.List videos = YoutubeConnector.getConnection().videos().list("id,snippet");
+            videos.setId(videoId);
+
+            VideoListResponse videoResponse =  videos.execute();
+            if(videoResponse != null && !videoResponse.isEmpty() && videoResponse.getItems().size() ==1) {
+                Video video =videoResponse.getItems().get(0);
+                return video;
+            }
+
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+                    + e.getDetails().getMessage());
+        } catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        }   catch (CredentialRequiredException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
             throw e;
         } catch (Throwable t) {
             t.printStackTrace();
