@@ -7,10 +7,13 @@ import com.google.gson.Gson;
 import com.typesafe.config.ConfigFactory;
 import models.SearchRequest;
 import models.SearchResponse;
+import models.User;
 import org.apache.commons.lang3.StringUtils;
+import org.jongo.MongoCollection;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import util.CollectionNames;
 import youtube.YSearch;
 import youtube.util.CredentialRequiredException;
 import youtube.util.ResponseMapper;
@@ -36,9 +39,14 @@ public class SearchController extends Controller {
             } else {
                 // throw error message
             }
-
+            String userId = null;
+            if(searchRequest.userToken != null) {
+                MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+                User user = users.findOne("{ _id:# }", searchRequest.userToken).as(User.class);
+                if(user != null ) userId = user._id;
+            }
             SearchListResponse result = search(searchRequest);
-            response = ResponseMapper.getSearchResponse(result);
+            response = ResponseMapper.getSearchResponse(result, userId);
 
         }  catch(CredentialRequiredException e) {
             e.printStackTrace();

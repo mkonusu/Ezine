@@ -14,6 +14,7 @@ import play.Logger;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import util.AppUtil;
 import util.CollectionNames;
 import youtube.YChannel;
 import youtube.util.CredentialRequiredException;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class ChannelController extends Controller {
 
-    ChannelResponse channelResponse = new ChannelResponse();
+
 
     public static Result getChannels() {
 
@@ -47,6 +48,12 @@ public class ChannelController extends Controller {
                 channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
             }
 
+            String userId = null;
+            if(channelRequest.userToken != null) {
+                MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+                User user = users.findOne("{ _id:#}", channelRequest.userToken).as(User.class);
+                if(user != null ) userId = user._id;
+            }
             MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
             List<ChannelDetails> channelsList = new ArrayList<>();
             Pagination pagination  = channelRequest.pagination;
@@ -56,6 +63,9 @@ public class ChannelController extends Controller {
 
                 while (cursor.hasNext()){
                     ChannelDetails resp = cursor.next();
+                    if(userId !=null)  {
+                        resp.isFavourite = AppUtil.isFavourite(userId,resp.channelId, Favourite.ResourceType.CHANNEL.toString());
+                    }
                     channelsList.add(resp);
                 }
             } catch (IOException e){
@@ -108,6 +118,7 @@ public class ChannelController extends Controller {
         JsonNode json = request().body().asJson();
         String channelId =  json.get("channelId").textValue();
         String langCode =  json.get("langCode").textValue();
+        String userToken =  json.get("userToken").textValue();
         boolean channelByUser = false;
         String channelUser = null;
         try{

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class SearchRequest implements Serializable {
 
 
+    public String userToken;
     public String searchKey;
     public long recordsPerPage = 10;
     public String pageToken;

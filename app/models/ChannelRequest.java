@@ -5,6 +5,7 @@ package models;
  */
 public class ChannelRequest {
 
+    public String userToken;
     public Pagination pagination;
     public String language;
 

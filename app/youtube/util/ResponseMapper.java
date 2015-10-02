@@ -2,6 +2,7 @@ package youtube.util;
 
 import com.google.api.services.youtube.model.*;
 import models.*;
+import util.AppUtil;
 import youtube.YSearch;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class ResponseMapper {
 
-    public static SearchResponse getSearchResponse(SearchListResponse searchListResponse) throws CredentialRequiredException {
+    public static SearchResponse getSearchResponse(SearchListResponse searchListResponse, String userId) throws CredentialRequiredException {
 
         SearchResponse response = new SearchResponse();
 
@@ -45,6 +46,9 @@ public class ResponseMapper {
                 Video videoDetails = YSearch.video(video.id);
                 if(videoDetails != null) {
                     video.thumbnailInfo = getThumbnails(videoDetails.getSnippet().getThumbnails());
+                }
+                if(userId !=null)  {
+                    video.isFavourite = AppUtil.isFavourite(userId, video.id, Favourite.ResourceType.VIDEO.toString());
                 }
 
                 videos.add(video);
