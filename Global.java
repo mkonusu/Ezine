@@ -13,7 +13,7 @@ import util.CollectionNames;
 /**
  * Created by Murali on 02-10-2015.
  */
-public class Global1  extends GlobalSettings {
+public class Global  extends GlobalSettings {
 
 
     public void onStart(Application app){
