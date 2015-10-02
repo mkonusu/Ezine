@@ -32,11 +32,11 @@ public class ChannelController extends Controller {
 
 
 
-    public static Result getYChannels() {
+    public static Result getChannels() {
 
         ChannelResponse response = new ChannelResponse();
 
-       /* try {
+       try {
 
             ChannelRequest channelRequest = null;
             if (request().body() == null || request().body().asJson() == null) {
@@ -46,7 +46,12 @@ public class ChannelController extends Controller {
                 JsonNode json = request().body().asJson();
                 channelRequest = new Gson().fromJson(json.toString(), models.ChannelRequest.class);
             }
-
+            if(channelRequest == null) {
+                return ok("Invalid request");
+            }
+           if(channelRequest.pagination == null) {
+               channelRequest.pagination =  new Pagination(10, 1);
+           }
             String userId = null;
             if(channelRequest!=null && channelRequest.userToken != null) {
                 MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
@@ -79,7 +84,7 @@ public class ChannelController extends Controller {
         }  catch(Exception e) {
             e.printStackTrace();
 
-        }*/
+        }
 
         return ok(new Gson().toJson(response));
     }

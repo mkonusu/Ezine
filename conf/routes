@@ -16,7 +16,7 @@ GET         /api/v1/user/:userId/language/:langCode/subscribe          controlle
 GET         /api/v1/user/:userId/language/:langCode/unsubscribe        controllers.SetupController.unsubscribeLanguage(userId, langCode)
 GET         /api/v1/categories                                         controllers.ChannelController.getCategories()
 
-POST        /api/v1/channels                                           controllers.ChannelController.getYChannels()
+POST        /api/v1/channels                                           controllers.ChannelController.getChannels()
 POST        /api/v1/verify                                             controllers.UserController.verify()
 POST        /api/v1/register                                           controllers.UserController.register()
 POST        /api/v1/channel/subscribe                                  controllers.ChannelController.subscribe()
