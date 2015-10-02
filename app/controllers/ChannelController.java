@@ -36,7 +36,7 @@ public class ChannelController extends Controller {
 
         ChannelResponse response = new ChannelResponse();
 
-        try {
+       /* try {
 
             ChannelRequest channelRequest = null;
             if (request().body() == null || request().body().asJson() == null) {
@@ -79,7 +79,7 @@ public class ChannelController extends Controller {
         }  catch(Exception e) {
             e.printStackTrace();
 
-        }
+        }*/
 
         return ok(new Gson().toJson(response));
     }
