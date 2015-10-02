@@ -61,9 +61,10 @@ public class ChannelController extends Controller {
             MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);
             List<ChannelDetails> channelsList = new ArrayList<>();
             Pagination pagination  = channelRequest.pagination;
-            try (MongoCursor<ChannelDetails> cursor = channels.find("{language : #}", channelRequest.language)
+            try {
+                MongoCursor<ChannelDetails> cursor = channels.find("{language : #}", channelRequest.language)
                     .skip(pagination.recordsPerPage * (pagination.pageNo - 1)).limit(pagination.recordsPerPage)
-                    .as(ChannelDetails.class)){
+                    .as(ChannelDetails.class);
 
                 while (cursor.hasNext()){
                     ChannelDetails resp = cursor.next();
@@ -72,7 +73,7 @@ public class ChannelController extends Controller {
                     }
                     channelsList.add(resp);
                 }
-            } catch (IOException e){
+            } catch (Exception e){
                 Logger.error("Error processing jobs : " + e.getMessage());
             }
 
