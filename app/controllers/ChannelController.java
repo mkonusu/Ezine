@@ -1,7 +1,6 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.youtube.model.Channel;
 import com.google.gson.Gson;
 import com.typesafe.config.ConfigFactory;
@@ -38,7 +37,7 @@ public class ChannelController extends Controller {
         ChannelResponse response = new ChannelResponse();
 
         try {
-            ObjectMapper om = new ObjectMapper();
+
             ChannelRequest channelRequest = null;
             if (request().body() == null || request().body().asJson() == null) {
                // throw exception
@@ -64,7 +63,7 @@ public class ChannelController extends Controller {
                 while (cursor.hasNext()){
                     ChannelDetails resp = cursor.next();
                     if(userId !=null)  {
-                        resp.isFavourite = AppUtil.isFavourite(userId,resp.channelId, Favourite.ResourceType.CHANNEL.toString());
+                        resp.isFavourite = AppUtil.isFavourite(userId, resp.channelId, Favourite.ResourceType.CHANNEL.toString());
                     }
                     channelsList.add(resp);
                 }
@@ -87,10 +86,11 @@ public class ChannelController extends Controller {
 
     public static Result youtubeLogin(String channelId) {
 
+        Logger.info("in youtube login");
         ChannelDetails response = null;
         String SUPERUSER = request().getQueryString("SUPERUSER");
         try {
-
+            Logger.info("in youtube login "+SUPERUSER);
             response = ResponseMapper.getChannelResponse(YChannel.alreadySubscribed(channelId));
 
         }  catch(CredentialRequiredException e) {
@@ -105,6 +105,7 @@ public class ChannelController extends Controller {
             // response  - set empty or error code
         }
         catch(Exception e) {
+            Logger.info("in youtube login falied "+e.getMessage());
             e.printStackTrace();
             // response  - set empty or error code
         }
