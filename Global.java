@@ -1,5 +1,3 @@
-
-
 import play.*;
 import play.GlobalSettings;
 import play.Logger;
@@ -11,7 +9,7 @@ import util.AppUtil;
 import util.CollectionNames;
 
 /**
- * Created by Murali on 02-10-2015.
+ * @Author Murali
  */
 public class Global  extends GlobalSettings {
 
