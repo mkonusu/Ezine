@@ -14,4 +14,5 @@ public class SearchVideo {
 
     public ThumbnailInfo thumbnailInfo;
 
+    public boolean isFavourite;
 }

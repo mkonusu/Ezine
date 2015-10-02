@@ -15,5 +15,7 @@ public class Channel {
     public String subscribedOn;
     public String subscribedBy;
 
+    public boolean isFavourite;
+
 
 }

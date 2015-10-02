@@ -12,5 +12,7 @@ public class Category implements Serializable {
     public String title;
     public String code;
     public String shortCode;
+    public String imageUrl;
     public boolean isActive;
+
 }
