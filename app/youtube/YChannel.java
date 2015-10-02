@@ -57,7 +57,6 @@ public class YChannel {
         return null;
     }
 
-
     public static Subscription alreadySubscribed(String channelId) throws CredentialRequiredException {
         try {
 
