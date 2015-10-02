@@ -32,7 +32,7 @@ public class ChannelController extends Controller {
 
 
 
-    public static Result getChannels() {
+    public static Result getYChannels() {
 
         ChannelResponse response = new ChannelResponse();
 
