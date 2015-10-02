@@ -40,7 +40,7 @@ public class SearchController extends Controller {
                 // throw error message
             }
             String userId = null;
-            if(searchRequest.userToken != null) {
+            if(searchRequest!=null && searchRequest.userToken != null) {
                 MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
                 User user = users.findOne("{ _id:# }", searchRequest.userToken).as(User.class);
                 if(user != null ) userId = user._id;

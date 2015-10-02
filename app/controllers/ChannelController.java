@@ -39,7 +39,7 @@ public class ChannelController extends Controller {
 
         try {
             ObjectMapper om = new ObjectMapper();
-            ChannelRequest channelRequest;
+            ChannelRequest channelRequest = null;
             if (request().body() == null || request().body().asJson() == null) {
                // throw exception
                 return ok("invalid request");
@@ -49,7 +49,7 @@ public class ChannelController extends Controller {
             }
 
             String userId = null;
-            if(channelRequest.userToken != null) {
+            if(channelRequest!=null && channelRequest.userToken != null) {
                 MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
                 User user = users.findOne("{ _id:#}", channelRequest.userToken).as(User.class);
                 if(user != null ) userId = user._id;
