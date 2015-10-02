@@ -28,7 +28,7 @@ public class MongoDBController extends Controller{
         try {
             client = new MongoClient(new MongoClientURI(ConfigFactory.load().getString("mongodb.uri")));
             client.setWriteConcern(WriteConcern.JOURNALED);
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String db = ConfigFactory.load().getString("mongodb.db");

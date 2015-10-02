@@ -21,7 +21,7 @@ import youtube.util.ResponseMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 
@@ -180,17 +180,58 @@ public class ChannelController extends Controller {
         return ok("Success!");
     }
 
+    public static Result getCategories() {
 
-    public static Result categories() {
-
-        try {
-
-        } catch(Exception e) {
-            e.printStackTrace();
+        MongoCollection categories = MongoDBController.getCollection(CollectionNames.categories);
+        List<Category> categoriesList = new ArrayList<>();
+        try (MongoCursor<Category> cursor = categories.find("{isActive : #}", true).as(Category.class)){
+            while (cursor.hasNext()){
+                categoriesList.add(cursor.next());
+            }
+        } catch (IOException e){
+            Logger.error("Error getting categories : " + e.getMessage());
         }
-
-        return ok();
+        return ok(new Gson().toJson(categoriesList));
     }
 
+    public static Result getFavourites() {
 
+        String userId = "";
+        MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
+        List<Favourite> favoritesList = new ArrayList<>();
+        try (MongoCursor<Favourite> cursor = favourites.find("{ userId: #, #isActive : #}", userId, true).as(Favourite.class)){
+            while (cursor.hasNext()){
+                favoritesList.add(cursor.next());
+            }
+        } catch (IOException e){
+            Logger.error("Error getting categories : " + e.getMessage());
+        }
+        return ok(new Gson().toJson(favoritesList));
+    }
+
+    public static Result setFavourite() {
+
+        Favourite favRequest = null;
+        if (request().body() == null || request().body().asJson() == null) {
+            // throw exception
+            return ok("invalid request");
+        } else {
+            JsonNode json = request().body().asJson();
+            favRequest = new Gson().fromJson(json.toString(), models.Favourite.class);
+        }
+        if(favRequest !=null) {
+            MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
+            Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", favRequest.userId, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
+            if (fav == null) {
+                fav = new Favourite(favRequest.userId, favRequest.resourceId, favRequest.resourceType);
+                favourites.insert(fav);
+            } else {
+                if (!fav.isActive) {
+                    fav.isActive = true;
+                    favourites.save(fav);
+                }
+            }
+        }
+        return ok("Success");
+    }
 }
