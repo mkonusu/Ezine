@@ -1,5 +1,7 @@
 package models;
 
+import org.bson.types.ObjectId;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

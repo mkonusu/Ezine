@@ -52,8 +52,8 @@ public class ChannelController extends Controller {
            }
             String userId = null;
             if(channelRequest!=null && channelRequest.userToken != null) {
-                MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
-                User user = users.findOne("{ _id:#}", channelRequest.userToken).as(User.class);
+
+                User user = UserController.getUserFromSessionToken( channelRequest.userToken);
                 if(user != null ) userId = user._id;
             }
             MongoCollection channels = MongoDBController.getCollection(CollectionNames.channels);

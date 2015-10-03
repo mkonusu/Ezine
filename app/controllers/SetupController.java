@@ -3,8 +3,10 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.mongodb.BasicDBObject;
 import models.Language;
 import models.User;
+import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import play.Logger;
@@ -15,6 +17,8 @@ import util.CollectionNames;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.jongo.Oid.withOid;
 
 /**
  * @Author Murali
@@ -43,7 +47,7 @@ public class SetupController extends Controller {
         MongoCollection languages = MongoDBController.getCollection(CollectionNames.languages);
         MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
 
-        User fromDB = users.findOne("{_id : #}",userId).as(User.class);
+        User fromDB = UserController.getUserFromSessionToken(userId);
         Language language = languages.findOne("{code : #}", languageCode).as(Language.class);
 
 
@@ -78,7 +82,10 @@ public class SetupController extends Controller {
     public static Result unsubscribeLanguage(String userId, String languageCode) {
 
         MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
-        users.update("{_id: # }", userId).upsert().multi().with("{ $pull : {languages : {'_id' : #}}}", languageCode);
+        User user = UserController.getUserFromSessionToken(userId);
+        if(user != null) {
+            users.update("{_id: # }", user._id).upsert().multi().with("{ $pull : {languages : {'_id' : #}}}", languageCode);
+        }
 
         return ok("success");
     }

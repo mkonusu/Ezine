@@ -59,11 +59,17 @@ public class UserController  extends Controller {
             return ok(resp);
         }
 
-        createUserSession(fromDB);
+        Session session = createUserSession(fromDB);
         createLoginHistory(fromDB);
 
         fromDB.password = ""; // remove password in response
-        return ok(new Gson().toJson(fromDB));
+
+        ObjectMapper om = new ObjectMapper();
+        ObjectNode res = om.createObjectNode();
+        res.put("userToken", session._id);
+        res.put("userDetails", new Gson().toJson(fromDB));
+
+        return ok(res);
     }
 
     public static User authenticate(User user) {
@@ -80,15 +86,10 @@ public class UserController  extends Controller {
 
     public static Result getUser(String userId) {
 
-        MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
-        User fromDB = users.findOne("{_id : #}", userId).as(User.class);
-        if(fromDB != null) {
-            fromDB.password = "";
-        } else {
-            // throw exception
-        }
+        User user = getUserFromSessionToken(userId);
 
-        return ok(new Gson().toJson(fromDB));
+
+        return ok(new Gson().toJson(user));
     }
 
 
@@ -107,17 +108,29 @@ public class UserController  extends Controller {
         // check user already exists
 
         User fromDB = users.findOne("{email : #}", user.email).as(User.class);
+        Session session  = null;
         if(fromDB ==  null) {
             String password = getEncodedPassword(user.password);
+            user._id = UUID.randomUUID().toString();
             user.password = password;
+            user.languages = new ArrayList<>();
             users.save(user);
-            createUserSession(user);
+            session  = createUserSession(user);
             createLoginHistory(user);
         } else {
             return ok("User already exists");
         }
         fromDB = users.findOne("{email : #}", user.email).as(User.class);
         fromDB.password = null;
+
+        ObjectMapper om = new ObjectMapper();
+        ObjectNode res = om.createObjectNode();
+        if(session != null) {
+            res.put("userToken", session._id);
+        }
+        res.put("userDetails", new Gson().toJson(fromDB));
+
+
         return ok(new Gson().toJson(fromDB));
     }
 
@@ -163,7 +176,7 @@ public class UserController  extends Controller {
     }
 
 
-    private static void createUserSession(User user) {
+    private static Session createUserSession(User user) {
 
         Session session = new Session();
         session._id = UUID.randomUUID().toString();
@@ -176,6 +189,7 @@ public class UserController  extends Controller {
         sessions.update("{email : #}", user.email).multi().with("{$set: {isActive : false}}");
         sessions.save(session);
         setCookieForUser(session, DEFAULT_COOKIE_DURATION);
+        return session;
     }
 
     /**
@@ -216,6 +230,26 @@ public class UserController  extends Controller {
         return user;
     }
 
+
+
+    public static User getUserFromSessionToken(String userToken) {
+        User user = null;
+        try{
+            // sessionToken = getCookieValue(USER_COOKIE);
+            if (userToken != null) {
+                MongoCollection sessions = MongoDBController.getCollection(CollectionNames.session);
+                Session active = sessions.findOne("{_id : #}", userToken).as(Session.class);
+                if (active != null){
+                    MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
+                    user = users.findOne("{email : #}", active.email).as(User.class);
+                }
+            }
+        }catch (NullPointerException npe){
+            Logger.info("User information not in the cookie ...");
+        }
+        return user;
+    }
+
     /**
      * Retrieve cookie value
      * @param cookieName
@@ -233,7 +267,7 @@ public class UserController  extends Controller {
 
         MongoCollection users = MongoDBController.getCollection(CollectionNames.users);
 
-        User fromDB = users.findOne("{_id : #}",userId).as(User.class);
+        User fromDB = getUserFromSessionToken(userId);
 
         if(fromDB != null) {
             JsonNode resp= new ObjectMapper().valueToTree(fromDB.languages);
