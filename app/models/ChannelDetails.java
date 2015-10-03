@@ -25,7 +25,7 @@ public class ChannelDetails implements Serializable {
 
     public ThumbnailInfo thumbnailInfo;
 
-
+    public String categoryId;
     public boolean isFavourite;
 
 }

@@ -30,8 +30,6 @@ import java.util.List;
  */
 public class ChannelController extends Controller {
 
-
-
     public static Result getChannels() {
 
         ChannelResponse response = new ChannelResponse();
@@ -126,6 +124,7 @@ public class ChannelController extends Controller {
         String channelId =  json.get("channelId").textValue();
         String langCode =  json.get("langCode").textValue();
         String userToken =  json.get("userToken").textValue();
+        String categoryId =  json.get("categoryId").textValue();
         boolean channelByUser = false;
         String channelUser = null;
         try{
@@ -164,7 +163,7 @@ public class ChannelController extends Controller {
                 System.out.println("already exists in db "+fromDB);
                 channelInfo.language = langCode;
                 channelInfo.active = true;
-
+                channelInfo.categoryId = categoryId;
                 if(fromDB == null) {
                     System.out.println("store in db " + channelInfo.channelId);
                     channels.insert(channelInfo);

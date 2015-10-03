@@ -8,6 +8,7 @@ public class ChannelRequest {
     public String userToken;
     public Pagination pagination;
     public String language;
+    public String categoryId;
 
     public ChannelRequest() {
 
