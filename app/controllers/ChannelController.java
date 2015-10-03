@@ -60,7 +60,7 @@ public class ChannelController extends Controller {
             List<ChannelDetails> channelsList = new ArrayList<>();
             Pagination pagination  = channelRequest.pagination;
             try {
-                MongoCursor<ChannelDetails> cursor = channels.find("{language : #}", channelRequest.language)
+                MongoCursor<ChannelDetails> cursor = channels.find("{language : #, categoryId: #}", channelRequest.language, channelRequest.categoryId)
                     .skip(pagination.recordsPerPage * (pagination.pageNo - 1)).limit(pagination.recordsPerPage)
                     .as(ChannelDetails.class);
 
