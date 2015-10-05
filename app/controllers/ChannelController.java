@@ -243,10 +243,7 @@ public class ChannelController extends Controller {
                 fav = new Favourite(favRequest.userId, favRequest.resourceId, favRequest.resourceType);
                 favourites.insert(fav);
             } else {
-                if (!fav.isActive) {
-                    fav.isActive = true;
                     favourites.save(fav);
-                }
             }
         }
         return ok("Success");
