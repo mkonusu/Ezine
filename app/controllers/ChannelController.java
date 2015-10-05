@@ -229,6 +229,7 @@ public class ChannelController extends Controller {
     public static Result setFavourite() {
 
         Favourite favRequest = null;
+
         if (request().body() == null || request().body().asJson() == null) {
             // throw exception
             return ok("invalid request");
