@@ -244,7 +244,7 @@ public class ChannelController extends Controller {
             User user = UserController.getUserFromSessionToken(favRequest.userId);
             if(user != null ) {
                 MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
-                Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
+                Favourite fav = favourites.findOne("{userId:#, resourceId:#, resourceType:#}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
                 Logger.info("verify isfav "+user._id + " "+favRequest.resourceId +" "+favRequest.resourceType +" "+fav);
                 if (fav == null) {
 
