@@ -245,8 +245,10 @@ public class ChannelController extends Controller {
                 Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
                 if (fav == null) {
                     fav = new Favourite(user._id, favRequest.resourceId, favRequest.resourceType);
+                    fav.isActive = favRequest.isActive;
                     favourites.insert(fav);
                 } else {
+                    fav.isActive = favRequest.isActive;
                     favourites.save(fav);
                 }
             }
