@@ -66,7 +66,7 @@ public class AppUtil {
         Favourite fav = favourites.findOne("{userId:#, resourceId:#, resourceType:#}",userId, resourceId, resourceType).as(Favourite.class);
         if(fav !=  null) {
 
-            if(!fav.isActive) {
+            if(fav.isActive) {
                 found = true;
             }
         }
