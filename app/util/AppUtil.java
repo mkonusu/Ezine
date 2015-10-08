@@ -63,7 +63,9 @@ public class AppUtil {
 
         boolean found = false;
         MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
+
         Favourite fav = favourites.findOne("{userId:#, resourceId:#, resourceType:#}",userId, resourceId, resourceType).as(Favourite.class);
+        Logger.info("verify isfav "+userId + " "+resourceId +" "+resourceType +" "+fav);
         if(fav !=  null) {
 
             if(fav.isActive) {

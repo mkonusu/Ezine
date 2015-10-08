@@ -68,6 +68,7 @@ public class ChannelController extends Controller {
                 while (cursor.hasNext()){
                     ChannelDetails resp = cursor.next();
                     if(userId !=null)  {
+
                         resp.isFavourite = AppUtil.isFavourite(userId, resp.channelId, Favourite.ResourceType.CHANNEL.toString());
                     }
                     channelsList.add(resp);
@@ -244,6 +245,7 @@ public class ChannelController extends Controller {
             if(user != null ) {
                 MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
                 Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
+                Logger.info("verify isfav "+user._id + " "+favRequest.resourceId +" "+favRequest.resourceType +" "+fav);
                 if (fav == null) {
 
                     fav = new Favourite(user._id, favRequest.resourceId, favRequest.resourceType);
