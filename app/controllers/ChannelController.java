@@ -237,14 +237,18 @@ public class ChannelController extends Controller {
             JsonNode json = request().body().asJson();
             favRequest = new Gson().fromJson(json.toString(), models.Favourite.class);
         }
+
         if(favRequest !=null) {
-            MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
-            Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", favRequest.userId, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
-            if (fav == null) {
-                fav = new Favourite(favRequest.userId, favRequest.resourceId, favRequest.resourceType);
-                favourites.insert(fav);
-            } else {
+            User user = UserController.getUserFromSessionToken(favRequest.userId);
+            if(user != null ) {
+                MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
+                Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
+                if (fav == null) {
+                    fav = new Favourite(user._id, favRequest.resourceId, favRequest.resourceType);
+                    favourites.insert(fav);
+                } else {
                     favourites.save(fav);
+                }
             }
         }
         return ok("Success");
