@@ -253,6 +253,7 @@ public class ChannelController extends Controller {
                     fav.isActive = favRequest.isActive;
                     favourites.insert(fav);
                 } else {
+                    Logger.info("update favurite "+user._id + " "+favRequest.resourceId +" "+favRequest.resourceType);
                     fav.isActive = favRequest.isActive;
                     favourites.update("{_id : #}", fav._id).upsert().with(fav);
                 }
