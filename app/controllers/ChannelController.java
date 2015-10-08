@@ -254,7 +254,7 @@ public class ChannelController extends Controller {
                     favourites.insert(fav);
                 } else {
                     fav.isActive = favRequest.isActive;
-                    favourites.save(fav);
+                    favourites.update("{_id : #}", fav._id).upsert().with(fav);
                 }
             }
         }
