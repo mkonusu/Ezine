@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -244,7 +245,9 @@ public class ChannelController extends Controller {
                 MongoCollection favourites = MongoDBController.getCollection(CollectionNames.favourites);
                 Favourite fav = favourites.findOne("{{userId:#, resourceId:#, resourceType:#}}", user._id, favRequest.resourceId, favRequest.resourceType).as(Favourite.class);
                 if (fav == null) {
+
                     fav = new Favourite(user._id, favRequest.resourceId, favRequest.resourceType);
+                    fav._id = UUID.randomUUID().toString();;
                     fav.isActive = favRequest.isActive;
                     favourites.insert(fav);
                 } else {
