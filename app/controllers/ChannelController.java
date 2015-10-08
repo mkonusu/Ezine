@@ -69,7 +69,7 @@ public class ChannelController extends Controller {
                     ChannelDetails resp = cursor.next();
                     if(userId !=null)  {
 
-                        resp.isFavourite = AppUtil.isFavourite(userId, resp.channelId, Favourite.ResourceType.CHANNEL.toString());
+                        resp.isFavourite = AppUtil.isFavourite(userId, resp.channelId, "CHANNEL");
                     }
                     channelsList.add(resp);
                 }

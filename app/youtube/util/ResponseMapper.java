@@ -48,7 +48,7 @@ public class ResponseMapper {
                     video.thumbnailInfo = getThumbnails(videoDetails.getSnippet().getThumbnails());
                 }
                 if(userId !=null)  {
-                    video.isFavourite = AppUtil.isFavourite(userId, video.id, Favourite.ResourceType.VIDEO.toString());
+                    video.isFavourite = AppUtil.isFavourite(userId, video.id, "VIDEO");
                 }
 
                 videos.add(video);
