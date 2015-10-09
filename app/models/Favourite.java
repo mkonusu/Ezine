@@ -17,6 +17,7 @@ public class Favourite implements Serializable {
 
     }
 
+
     public Favourite(String userId, String resourceId, String resourceType) {
         this.userId = userId;
         this.resourceId = resourceId;
