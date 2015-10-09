@@ -16,6 +16,7 @@ public class Application extends Controller {
 
     public static Result callbackHandler() {
 
+
         try {
             String token = request().getQueryString("code");
             String redirectUri = ConfigFactory.load().getString("youtube.api.redirect.uri");
