@@ -1,1 +1,1 @@
-web: play run  -Dhttp.port=${PORT}
+web: target/universal/stage/bin/ezine  -Dhttp.port=${PORT}
