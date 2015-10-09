@@ -8,6 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Murali on 09-10-2015.
  */
+
 public class UserActivity implements Serializable{
 
     public String _id;
