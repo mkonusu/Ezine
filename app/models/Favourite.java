@@ -15,7 +15,6 @@ public class Favourite implements Serializable {
 
     public Favourite() {
 
-
     }
 
     public Favourite(String userId, String resourceId, String resourceType) {
