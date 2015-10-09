@@ -2,10 +2,12 @@ package models;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
+
 /**
  * Created by Murali on 09-10-2015.
  */
-public class UserActivity {
+public class UserActivity implements Serializable{
 
     public String _id;
     public String userId;

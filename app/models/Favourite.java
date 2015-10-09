@@ -7,8 +7,6 @@ import java.io.Serializable;
  */
 public class Favourite implements Serializable {
 
-
-
     public String _id;
     public String userId;
     public String resourceId;
