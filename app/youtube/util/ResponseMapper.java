@@ -43,6 +43,7 @@ public class ResponseMapper {
                 video.description = snippet.getDescription();
                 video.title = snippet.getTitle();
 
+
                 Video videoDetails = YSearch.video(video.id);
                 if(videoDetails != null) {
                     video.thumbnailInfo = getThumbnails(videoDetails.getSnippet().getThumbnails());
