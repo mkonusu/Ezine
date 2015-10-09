@@ -14,5 +14,5 @@ public class UserActivity implements Serializable{
     public String activity; // Login,
     public String resourceId;
     public String resourceType;
-    public DateTime activityOn;
+    public DateTime activityOn; // performed on
 }
